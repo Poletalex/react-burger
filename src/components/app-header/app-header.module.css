@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    background-color: #1C1C21;
+    justify-content: center;
+    align-items: center;
+    height: 88px;
+    margin: 40px 40px 0px;
+}
+
+.box {
+    display: flex;
+}
+
+.nav {
+    display: flex;
+    padding: 16px 20px;
+    margin: 8px 16px; 
+}
+
+.nav p {
+    margin-left: 8px;
+}
