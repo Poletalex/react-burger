@@ -19,7 +19,9 @@ const AppHeader = props => {
                     Лента заказов
                 </p>
             </div>
-            <Logo />
+            <div className={styles.logo}>
+                <Logo />
+            </div>            
             <div className={navClass}>
                 <ProfileIcon type="primary" />
                 <p className="text text_type_main-default ml-2">

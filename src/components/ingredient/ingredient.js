@@ -1,5 +1,6 @@
 import React from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { dataType } from '../utils/dataType';
 import styles from './ingredient.module.css';
 
 const Ingredient = ({data}) => { 
@@ -20,6 +21,10 @@ const Ingredient = ({data}) => {
             
         </div>
     );
+};
+
+Ingredient.propTypes = {
+    data: dataType
 };
 
 export default Ingredient;

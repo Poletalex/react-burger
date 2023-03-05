@@ -1,9 +1,10 @@
 import React from 'react';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
+import { dataType } from '../utils/dataType';
 import styles from './burger-constructor.module.css';
-import { data } from '../utils/data';
 
-const BurgerConstructor = props => {
+const BurgerConstructor = ({data}) => {
     const price = 610;
     return (
         <div className={styles.container + ' pt-25'}>
@@ -39,6 +40,10 @@ const BurgerConstructor = props => {
             </footer>
         </div>
     );
+};
+
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(dataType)
 };
 
 export default BurgerConstructor;

@@ -6,6 +6,10 @@
     height: 88px;
 }
 
+.logo {
+    margin: 0 10%;
+}
+
 .box {
     display: flex;
 }

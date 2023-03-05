@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useMemo} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
+import PropTypes from 'prop-types';
+import { dataType } from '../utils/dataType';
 import styles from './burger-ingredients.module.css';
-import { data } from '../utils/data';
 
 const categories = [
     {
@@ -22,7 +23,7 @@ const categories = [
     }
 ];
 
-const getСategorizedData = () => {
+const getСategorizedData = data => {
     const categorizedData = JSON.parse(JSON.stringify(categories));
     
     data.forEach(nextIngredient => {
@@ -36,11 +37,7 @@ const getСategorizedData = () => {
 
 const BurgerIngredients = props => {
     const [current, setCurrent] = useState(categories[0]);
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        setData(getСategorizedData());
-    }, []);
+    const data = useMemo(() => getСategorizedData(props.data), [props.data]);
 
     return (
         <div className={styles.container + ' mr-10'}>
@@ -82,6 +79,10 @@ const BurgerIngredients = props => {
             </div>             
         </div>
     );
+};
+
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(dataType)
 };
 
 export default BurgerIngredients;
