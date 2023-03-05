@@ -1,34 +1,42 @@
 import React from 'react';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { data } from '../utils/data';
 
-const img = data[0].image; 
-
 const BurgerConstructor = props => {
+    const price = 610;
     return (
-        <div className={`${styles.container} pt-25`}>
-            <div className={`${styles.list}`}>
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={200}
-                    thumbnail={img}
-                />
-                <ConstructorElement
-                    text="Краторная булка N-200i (верх)"
-                    price={50}
-                    thumbnail={img}
-                />
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={200}
-                    thumbnail={img}
-                />
+        <div className={styles.container + ' pt-25'}>
+            <div className={styles.list + ' mb-10'}>
+                {
+                    data.map(nextIngredient =>
+                        <div
+                            key={nextIngredient._id}
+                            className={styles.element}>
+                            <div className={styles.dragIcon}>
+                                <DragIcon type="primary" />
+                            </div>
+                            <ConstructorElement
+                                type=""
+                                isLocked={true}
+                                text={nextIngredient.name}
+                                price={nextIngredient.price}
+                                thumbnail={nextIngredient.image}
+                            />
+                        </div>)
+                }
             </div>
+            <footer className={styles.footer + ' '}>
+                <div className={styles.price + ' mr-10'}>
+                    <p className="text text_type_main-large pr-1">
+                        {price}
+                    </p>
+                    <CurrencyIcon type="primary" />
+                </div>
+                <Button htmlType="button" type="primary" size="medium">
+                    Оформить заказ
+                </Button>
+            </footer>
         </div>
     );
 };

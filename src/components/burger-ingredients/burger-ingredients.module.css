@@ -4,8 +4,22 @@
     flex: 1 1;
 }
 
+.title {
+    flex: 1 1;
+}
+
 .tabs {
     display: flex;
+    flex: 0 1;
+}
+
+:global .tab {
+    flex: 1 1;
+}
+
+.categories {
+    flex: 10 1;
+    overflow-y: auto;
 }
 
 .category {

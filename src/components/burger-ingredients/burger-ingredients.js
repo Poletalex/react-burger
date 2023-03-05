@@ -43,8 +43,8 @@ const BurgerIngredients = props => {
     }, []);
 
     return (
-        <div className={`${styles.container} mr-10`}>
-            <p className="text text_type_main-medium mt-10 mb-5">
+        <div className={styles.container + ' mr-10'}>
+            <p className={styles.title + ' text text_type_main-medium mt-10 mb-5'}>
                 Соберите бургер
             </p>
             <div className={styles.tabs}>
@@ -59,25 +59,27 @@ const BurgerIngredients = props => {
                         </Tab>)
                 }
             </div>
-            {
-                data && data.map(category =>
-                    <div
-                        key={category.type}
-                        className={styles.category}>
-                        <p className="text text_type_main-default mt-10">
-                            {category.title}
-                        </p>
-                        <div className={styles.ingredients}>
-                            {
-                                category.data.map(nextIngredient =>
-                                    <Ingredient
-                                        key={nextIngredient._id}
-                                        data={nextIngredient} />
-                                )
-                            }
-                        </div>                        
-                    </div>)
-            } 
+            <div className={styles.categories}>
+                {
+                    data && data.map(category =>
+                        <div
+                            key={category.type}
+                            className={styles.category}>
+                            <p className="text text_type_main-default mt-10">
+                                {category.title}
+                            </p>
+                            <div className={styles.ingredients}>
+                                {
+                                    category.data.map(nextIngredient =>
+                                        <Ingredient
+                                            key={nextIngredient._id}
+                                            data={nextIngredient} />
+                                    )
+                                }
+                            </div>
+                        </div>)
+                }
+            </div>             
         </div>
     );
 };
