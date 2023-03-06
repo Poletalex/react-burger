@@ -1,8 +1,8 @@
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import PropTypes from 'prop-types';
-import { dataType } from '../utils/dataType';
+import { dataType } from '../../utils/dataType';
 import styles from './burger-ingredients.module.css';
 
 const categories = [
@@ -10,7 +10,7 @@ const categories = [
         type: 'bun',
         title: 'Булки',
         data: []
-    }, 
+    },
     {
         type: 'sauce',
         title: 'Соусы',
@@ -25,14 +25,14 @@ const categories = [
 
 const getСategorizedData = data => {
     const categorizedData = JSON.parse(JSON.stringify(categories));
-    
+
     data.forEach(nextIngredient => {
         const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
-        if (category) { 
+        if (category) {
             category.data.push(nextIngredient);
-        }        
+        }
     });
-    return categorizedData;       
+    return categorizedData;
 };
 
 const BurgerIngredients = props => {
@@ -76,13 +76,13 @@ const BurgerIngredients = props => {
                             </div>
                         </div>)
                 }
-            </div>             
+            </div>
         </div>
     );
 };
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataType)
+    data: PropTypes.arrayOf(dataType).isRequired
 };
 
 export default BurgerIngredients;

@@ -18,6 +18,16 @@
     align-items: center;
 }
 
+.elementTop {
+    composes: element;
+    margin-bottom: 10px;
+}
+
+.elementBottom {
+    composes: element;
+    margin-top: 10px;
+}
+
 .dragIcon {
     width: 32px;
     top: 40%;
