@@ -25,7 +25,7 @@ const BurgerConstructor = ({ data }) => {
             }
             <div className={styles.list}>
                 {
-                    data.map(nextIngredient =>
+                    data.map(nextIngredient => (
                         nextIngredient.type !== 'bun' &&
                         <div
                             key={nextIngredient._id}
@@ -40,7 +40,7 @@ const BurgerConstructor = ({ data }) => {
                                 price={nextIngredient.price}
                                 thumbnail={nextIngredient.image}
                             />
-                        </div>)
+                        </div>))
                 }
             </div>
             {

@@ -46,19 +46,19 @@ const BurgerIngredients = props => {
             </p>
             <div className={styles.tabs}>
                 {
-                    categories.map(category =>
+                    categories.map(category => (
                         <Tab
                             key={category.type}
                             value={category.title}
                             active={current === category.title}
                             onClick={setCurrent}>
                             {category.title}
-                        </Tab>)
+                        </Tab>))
                 }
             </div>
             <div className={styles.categories}>
                 {
-                    data && data.map(category =>
+                    data && data.map(category => (
                         <div
                             key={category.type}
                             className={styles.category}>
@@ -74,7 +74,7 @@ const BurgerIngredients = props => {
                                     )
                                 }
                             </div>
-                        </div>)
+                        </div>))
                 }
             </div>
         </div>
