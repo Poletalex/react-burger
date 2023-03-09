@@ -35,7 +35,7 @@ const getСategorizedData = data => {
     return categorizedData;
 };
 
-const BurgerIngredients = props => {
+export const BurgerIngredients = props => {
     const [current, setCurrent] = useState(categories[0]);
     const data = useMemo(() => getСategorizedData(props.data), [props.data]);
 
@@ -84,5 +84,3 @@ const BurgerIngredients = props => {
 BurgerIngredients.propTypes = {
     data: PropTypes.arrayOf(dataType).isRequired
 };
-
-export default BurgerIngredients;

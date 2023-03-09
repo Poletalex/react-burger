@@ -4,7 +4,7 @@ import styles from './app-header.module.css';
 
 const navClass = `${styles.nav} mr-2 mt-4 mb-4 pl-5 pr-5`;
 
-const AppHeader = props => {
+export const AppHeader = () => {
     return (
         <header className={styles.container}>
             <div className={navClass}>
@@ -14,8 +14,8 @@ const AppHeader = props => {
                 </p>
             </div>
             <div className={navClass}>
-                <ListIcon type="primary" />
-                <p className="text text_type_main-default ml-2">
+                <ListIcon type="secondary" />
+                <p className="text text_type_main-default text_color_inactive ml-2">
                     Лента заказов
                 </p>
             </div>
@@ -23,13 +23,11 @@ const AppHeader = props => {
                 <Logo />
             </div>            
             <div className={navClass}>
-                <ProfileIcon type="primary" />
-                <p className="text text_type_main-default ml-2">
+                <ProfileIcon type="secondary" />
+                <p className="text text_type_main-default text_color_inactive ml-2">
                     Личный кабинет
                 </p>
             </div>       
         </header>
     );
 };
-
-export default AppHeader;
