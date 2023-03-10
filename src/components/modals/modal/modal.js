@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
-import closeIcon from '../../../images/close.png';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import styles from './modal.module.css';
 
@@ -30,9 +30,8 @@ export const Modal = ({ children, header, onClose }) => {
                         <p className="text text_type_main-large">
                             {header}
                         </p>
-                        <img
-                            src={closeIcon}
-                            alt='close'
+                        <CloseIcon
+                            type="primary"
                             onClick={onClose} />
                     </header>
                     {children}

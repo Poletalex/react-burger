@@ -13,10 +13,14 @@ function App() {
     (async () => {
       try {
         const res = await fetch(DATA_SOURCE);
-        const { data } = await res.json();
-        setData(data);
+        if (res.ok) {
+          const { data } = await res.json();
+          setData(data);
+        } else { 
+          throw new Error(`Ошибка ${res.status}`)
+        }        
       } catch (err) { 
-        console.log('Ошибка получения данных!');
+        console.log(err.message);
       };      
     })();
   }, []);
