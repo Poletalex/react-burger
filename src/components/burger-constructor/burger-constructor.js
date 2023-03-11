@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { OrderDetails } from '../modals/order-details/order-details';
+import { Modal } from '../modals/modal/modal';
 import PropTypes from 'prop-types';
 import { dataType } from '../../utils/dataType';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = ({ data }) => {
+export const BurgerConstructor = ({ data }) => {
+    const [showModal, setShow] = useState(false);
     const price = 610;
 
     const bun = useMemo(() => data.find(nextIngredient => nextIngredient.type === 'bun'), [data]);
@@ -57,15 +60,26 @@ const BurgerConstructor = ({ data }) => {
             }
             <footer className={styles.footer + ' '}>
                 <div className={styles.price + ' mr-10'}>
-                    <p className="text text_type_main-large pr-1">
+                    <p className="text text_type_digits-medium pr-1">
                         {price}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium">
+                <Button
+                    htmlType="button"
+                    type="primary"
+                    size="medium"
+                    onClick={() => setShow(true)}>
                     Оформить заказ
                 </Button>
             </footer>
+            {
+                showModal && (
+                    <Modal onClose={() => setShow(false)}>
+                        <OrderDetails orderId='034536' />
+                    </Modal>
+                )
+            }
         </div>
     );
 };
@@ -73,5 +87,3 @@ const BurgerConstructor = ({ data }) => {
 BurgerConstructor.propTypes = {
     data: PropTypes.arrayOf(dataType).isRequired
 };
-
-export default BurgerConstructor;

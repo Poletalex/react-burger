@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Ingredient from '../ingredient/ingredient';
+import { Ingredient } from '../ingredient/ingredient';
+import { Modal } from '../modals/modal/modal';
+import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import PropTypes from 'prop-types';
 import { dataType } from '../../utils/dataType';
 import styles from './burger-ingredients.module.css';
@@ -35,8 +37,11 @@ const getСategorizedData = data => {
     return categorizedData;
 };
 
-const BurgerIngredients = props => {
-    const [current, setCurrent] = useState(categories[0]);
+export const BurgerIngredients = props => {
+    const [current, setCurrent] = useState(categories[0].title);
+    const [showModal, setShow] = useState(false);
+    const [currentIngredient, setIngredient] = useState(null);
+
     const data = useMemo(() => getСategorizedData(props.data), [props.data]);
 
     return (
@@ -70,13 +75,26 @@ const BurgerIngredients = props => {
                                     category.data.map(nextIngredient =>
                                         <Ingredient
                                             key={nextIngredient._id}
-                                            data={nextIngredient} />
+                                            data={nextIngredient}
+                                            onClick={() => {
+                                                setShow(true);
+                                                setIngredient(nextIngredient);
+                                            }} />
                                     )
                                 }
                             </div>
                         </div>))
                 }
             </div>
+            {
+                showModal && (
+                    <Modal
+                        header='Детали ингредиента'
+                        onClose={() => setShow(false)} >
+                        <IngredientDetails data={currentIngredient} />
+                    </Modal>
+                )
+            }
         </div>
     );
 };
@@ -84,5 +102,3 @@ const BurgerIngredients = props => {
 BurgerIngredients.propTypes = {
     data: PropTypes.arrayOf(dataType).isRequired
 };
-
-export default BurgerIngredients;
