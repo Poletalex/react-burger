@@ -1,14 +1,50 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext, useReducer, useEffect } from 'react';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
-import PropTypes from 'prop-types';
-import { dataType } from '../../utils/dataType';
+import { IngredientsContext } from '../app/app';
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({ data }) => {
+const reducer = (state, action) => {
+    return action.data.reduce((sum, nextItem) => {
+        const price = sum + nextItem.price;
+        return nextItem.type === 'bun' ? price * 2 : price;
+    }, 0);
+};
+
+export const BurgerConstructor = () => {
     const [showModal, setShow] = useState(false);
-    const price = 610;
+    const [orderId, setOrderId] = useState();
+    const { data } = useContext(IngredientsContext);
+    const [totalPrice, dispatchPrice] = useReducer(reducer, 0);
+
+    useEffect(() => {
+        dispatchPrice({data: data});
+    }, [data]);
+
+    const createOrder = async () => {
+        try {
+            if (data.length > 0) {
+                const res = await fetch('https://norma.nomoreparties.space/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    body: JSON.stringify({
+                        "ingredients": data.map(nextIngredient => nextIngredient._id)
+                    })
+                });
+                if (res.ok) {
+                    const { order } = await res.json();
+                    setOrderId(order.number);
+                } else {
+                    throw new Error(`Ошибка ${res.status}`)
+                }
+            }            
+        } catch (err) {
+            console.log(err.message);
+        };
+    };
 
     const bun = useMemo(() => data.find(nextIngredient => nextIngredient.type === 'bun'), [data]);
 
@@ -48,7 +84,7 @@ export const BurgerConstructor = ({ data }) => {
             </div>
             {
                 bun &&
-                <div className={styles.elementBottom + ' pl-8 mb-10'}>
+                <div className={styles.elementBottom + ' pl-8'}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -58,10 +94,10 @@ export const BurgerConstructor = ({ data }) => {
                     />
                 </div>
             }
-            <footer className={styles.footer + ' '}>
+            <footer className={styles.footer + ' mt-10'}>
                 <div className={styles.price + ' mr-10'}>
                     <p className="text text_type_digits-medium pr-1">
-                        {price}
+                        {totalPrice}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
@@ -69,21 +105,20 @@ export const BurgerConstructor = ({ data }) => {
                     htmlType="button"
                     type="primary"
                     size="medium"
-                    onClick={() => setShow(true)}>
+                    onClick={() => {
+                        setShow(true);
+                        createOrder();
+                    }}>
                     Оформить заказ
                 </Button>
             </footer>
             {
-                showModal && (
+                showModal && orderId && data.length > 0 && (
                     <Modal onClose={() => setShow(false)}>
-                        <OrderDetails orderId='034536' />
+                        <OrderDetails orderId={orderId} />
                     </Modal>
                 )
             }
         </div>
     );
-};
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(dataType).isRequired
 };
