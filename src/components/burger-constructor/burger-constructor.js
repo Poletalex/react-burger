@@ -62,7 +62,7 @@ export const BurgerConstructor = () => {
                     />
                 </div>
             }
-            <div className={styles.list}>
+            <div className={styles.list + ' pr-4'}>
                 {
                     data.map(nextIngredient => (
                         nextIngredient.type !== 'bun' &&

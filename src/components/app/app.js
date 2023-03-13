@@ -34,12 +34,10 @@ const App = () => {
       <main className={styles.main}>
         {
           data && (
-            <>
-              <BurgerIngredients data={ data } />
-              <IngredientsContext.Provider value={{ data: getFilteredData(data) }}>
-                <BurgerConstructor />
-              </IngredientsContext.Provider>  
-            </>                    
+            <IngredientsContext.Provider value={{ ingredients: data, data: getFilteredData(data) }}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </IngredientsContext.Provider>                     
           )
         }        
       </main>    
