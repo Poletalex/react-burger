@@ -1,8 +1,8 @@
 .container {
     display: flex;
     flex-direction: column;
-    flex: 1 1;
-    min-width: 50%;
+    flex: 0 1;
+    min-width: 35%;
 }
 
 .title {
@@ -16,11 +16,12 @@
 
 :global .tab {
     flex: 1 1;
+    min-width: auto;
 }
 
 .categories {
-    flex: 10 1;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .category {
