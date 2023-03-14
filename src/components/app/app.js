@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { AppHeader } from '../app-header/app-header';
 import { BurgerIngredients } from '../burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
+import { getFilteredData } from '../../utils/utils';
 
 const DATA_SOURCE = 'https://norma.nomoreparties.space/api/ingredients';
 
-function App() {
+export const IngredientsContext = createContext();
+
+const App = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -31,10 +34,10 @@ function App() {
       <main className={styles.main}>
         {
           data && (
-            <>
-              <BurgerIngredients data={data} />
-              <BurgerConstructor data={data} />
-            </>        
+            <IngredientsContext.Provider value={{ ingredients: data, data: getFilteredData(data) }}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </IngredientsContext.Provider>                     
           )
         }        
       </main>    

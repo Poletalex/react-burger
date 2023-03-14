@@ -1,10 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
-import PropTypes from 'prop-types';
-import { dataType } from '../../utils/dataType';
+import { IngredientsContext } from '../app/app';
 import styles from './burger-ingredients.module.css';
 
 const categories = [
@@ -37,12 +36,14 @@ const getСategorizedData = data => {
     return categorizedData;
 };
 
-export const BurgerIngredients = props => {
+export const BurgerIngredients = () => {
     const [current, setCurrent] = useState(categories[0].title);
     const [showModal, setShow] = useState(false);
     const [currentIngredient, setIngredient] = useState(null);
 
-    const data = useMemo(() => getСategorizedData(props.data), [props.data]);
+    const { ingredients } = useContext(IngredientsContext);
+
+    const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
 
     return (
         <div className={styles.container + ' mr-10'}>
@@ -67,7 +68,7 @@ export const BurgerIngredients = props => {
                         <div
                             key={category.type}
                             className={styles.category}>
-                            <p className="text text_type_main-default mt-10">
+                            <p className="text text_type_main-medium mt-10">
                                 {category.title}
                             </p>
                             <div className={styles.ingredients}>
@@ -97,8 +98,4 @@ export const BurgerIngredients = props => {
             }
         </div>
     );
-};
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataType).isRequired
 };
