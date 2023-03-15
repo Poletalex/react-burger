@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useMemo } from 'react';
 import { AppHeader } from '../app-header/app-header';
 import { BurgerIngredients } from '../burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../burger-constructor/burger-constructor';
@@ -28,13 +28,19 @@ const App = () => {
     })();
   }, []);
 
+  const contextValue = useMemo(() => {
+    if (data) {
+      return { ingredients: data, data: getFilteredData(data) };
+    }    
+  }, [data]);
+
   return (
     <div className={styles.app}>    
       <AppHeader />
       <main className={styles.main}>
         {
           data && (
-            <IngredientsContext.Provider value={{ ingredients: data, data: getFilteredData(data) }}>
+            <IngredientsContext.Provider value={contextValue}>
               <BurgerIngredients />
               <BurgerConstructor />
             </IngredientsContext.Provider>                     
