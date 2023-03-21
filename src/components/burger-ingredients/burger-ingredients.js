@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useContext } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
-import { IngredientsContext } from '../app/app';
 import styles from './burger-ingredients.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADD_INGREDIENT } from '../../services/actions/burger-constructor';
 
 const categories = [
     {
@@ -27,12 +28,15 @@ const categories = [
 const getСategorizedData = data => {
     const categorizedData = JSON.parse(JSON.stringify(categories));
 
-    data.forEach(nextIngredient => {
-        const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
-        if (category) {
-            category.data.push(nextIngredient);
-        }
-    });
+    if (data) { 
+        data.forEach(nextIngredient => {
+            const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
+            if (category) {
+                category.data.push(nextIngredient);
+            }
+        });
+    }
+    
     return categorizedData;
 };
 
@@ -41,9 +45,10 @@ export const BurgerIngredients = () => {
     const [showModal, setShow] = useState(false);
     const [currentIngredient, setIngredient] = useState(null);
 
-    const { ingredients } = useContext(IngredientsContext);
+    const { ingredients } = useSelector(store => store.ingredients);
 
     const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
+    const dispatch = useDispatch();
 
     return (
         <div className={styles.container + ' mr-10'}>
@@ -80,6 +85,10 @@ export const BurgerIngredients = () => {
                                             onClick={() => {
                                                 setShow(true);
                                                 setIngredient(nextIngredient);
+                                                dispatch({
+                                                    type: ADD_INGREDIENT,
+                                                    ingredient: nextIngredient
+                                                });
                                             }} />
                                     )
                                 }

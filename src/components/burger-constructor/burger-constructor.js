@@ -1,9 +1,10 @@
-import React, { useState, useMemo, useContext, useReducer, useEffect } from 'react';
+import React, { useState, useMemo, useReducer, useEffect } from 'react';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
-import { IngredientsContext } from '../app/app';
 import styles from './burger-constructor.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { REMOVE_INGREDIENT } from '../../services/actions/burger-constructor';
 
 const reducer = (state, action) => {
     return action.data.reduce((sum, nextItem) => {
@@ -15,11 +16,13 @@ const reducer = (state, action) => {
 export const BurgerConstructor = () => {
     const [showModal, setShow] = useState(false);
     const [orderId, setOrderId] = useState();
-    const { data } = useContext(IngredientsContext);
+    const data = useSelector(store => store.burgerConstructor.selected);
     const [totalPrice, dispatchPrice] = useReducer(reducer, 0);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatchPrice({data: data});
+        dispatchPrice({ data: data });
     }, [data]);
 
     const createOrder = async () => {
@@ -40,7 +43,7 @@ export const BurgerConstructor = () => {
                 } else {
                     throw new Error(`Ошибка ${res.status}`)
                 }
-            }            
+            }
         } catch (err) {
             console.log(err.message);
         };
@@ -59,6 +62,10 @@ export const BurgerConstructor = () => {
                         text={bun.name + ' (верх)'}
                         price={bun.price}
                         thumbnail={bun.image}
+                        handleClose={() => dispatch({
+                            type: REMOVE_INGREDIENT,
+                            ingredient: bun
+                        })}
                     />
                 </div>
             }
@@ -78,6 +85,10 @@ export const BurgerConstructor = () => {
                                 text={nextIngredient.name}
                                 price={nextIngredient.price}
                                 thumbnail={nextIngredient.image}
+                                handleClose={() => dispatch({
+                                    type: REMOVE_INGREDIENT,
+                                    ingredient: nextIngredient
+                                })}
                             />
                         </div>))
                 }
