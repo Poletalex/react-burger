@@ -2,6 +2,11 @@
     position: relative;
     display: flex;
     align-items: center;
+    cursor: move;
+}
+
+.dragging {
+    opacity: 0;
 }
 
 .dragIcon {

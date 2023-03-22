@@ -7,12 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ADD_INGREDIENT, SORT_INGREDIENTS } from '../../services/actions/burger-constructor';
 import { createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
-import { DraggableIngredient } from '../burger-ingredients/draggable-ingredient/draggable-ingredient';
+import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
 
 const reducer = (state, action) => {
     return action.data.reduce((sum, nextItem) => {
-        const price = sum + nextItem.price;
-        return nextItem.type === 'bun' ? price * 2 : price;
+        return sum + (nextItem.type === 'bun' ? nextItem.price * 2 : nextItem.price);
     }, 0);
 };
 
@@ -29,6 +28,8 @@ export const BurgerConstructor = () => {
     }, [data]);
 
     const bun = useMemo(() => data.find(nextIngredient => nextIngredient.type === 'bun'), [data]);
+
+    const { orderNum, request } = useSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
@@ -62,11 +63,15 @@ export const BurgerConstructor = () => {
             <div
                 className={styles.list + ' pr-4'}>
                 {
-                    data.map(nextIngredient => (
-                        nextIngredient.type !== 'bun' && 
-                        <DraggableIngredient
-                            key={nextIngredient._id + Math.random()}
-                            data={nextIngredient} />))
+                    data.map((nextIngredient, index) => {
+                        return (
+                            nextIngredient.type !== 'bun' &&
+                            <DraggableIngredient
+                                key={nextIngredient._id + Math.random()}
+                                index={index}
+                                data={nextIngredient}
+                            />);
+                    })
                 }
             </div>
             {
@@ -100,9 +105,9 @@ export const BurgerConstructor = () => {
                 </Button>
             </footer>
             {
-                showModal && data.length > 0 && (
+                showModal && data.length > 0 && orderNum && !request && (
                     <Modal onClose={() => setShow(false)}>
-                        <OrderDetails />
+                        <OrderDetails orderNum={orderNum} />
                     </Modal>
                 )
             }
