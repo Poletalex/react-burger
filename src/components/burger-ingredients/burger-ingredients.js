@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import styles from './burger-ingredients.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_INGREDIENT } from '../../services/actions/burger-constructor';
+import { CLOSE_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
 
 const categories = [
     {
@@ -28,7 +28,7 @@ const categories = [
 const getСategorizedData = data => {
     const categorizedData = JSON.parse(JSON.stringify(categories));
 
-    if (data) { 
+    if (data) {
         data.forEach(nextIngredient => {
             const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
             if (category) {
@@ -36,19 +36,32 @@ const getСategorizedData = data => {
             }
         });
     }
-    
+
     return categorizedData;
 };
 
 export const BurgerIngredients = () => {
-    const [current, setCurrent] = useState(categories[0].title);
+    const [activeTab, setTab] = useState(categories[0].title);
     const [showModal, setShow] = useState(false);
-    const [currentIngredient, setIngredient] = useState(null);
 
     const { ingredients } = useSelector(store => store.ingredients);
 
     const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
     const dispatch = useDispatch();
+
+    const categoriesRef = useRef();
+
+    const handleScroll = event => {
+        const parentTop = categoriesRef.current.getBoundingClientRect().top;
+        const startDiff = Math.abs(event.currentTarget.children[0].getBoundingClientRect().top - parentTop);
+
+        const { index } = Array.from(event.currentTarget.children).reduce((prev, curr, index) => {
+            const diff = Math.abs(parentTop - curr.getBoundingClientRect().top);
+            return diff < prev.diff ? { diff, index } : prev;
+        }, { diff: startDiff, index: 0 });
+
+        setTab(data[index].title);
+    };
 
     return (
         <div className={styles.container + ' mr-10'}>
@@ -61,13 +74,16 @@ export const BurgerIngredients = () => {
                         <Tab
                             key={category.type}
                             value={category.title}
-                            active={current === category.title}
-                            onClick={setCurrent}>
+                            active={activeTab === category.title}
+                            onClick={setTab}>
                             {category.title}
                         </Tab>))
                 }
             </div>
-            <div className={styles.categories}>
+            <div
+                ref={categoriesRef}
+                className={styles.categories}
+                onScroll={handleScroll}>
                 {
                     data && data.map(category => (
                         <div
@@ -84,9 +100,8 @@ export const BurgerIngredients = () => {
                                             data={nextIngredient}
                                             onClick={() => {
                                                 setShow(true);
-                                                setIngredient(nextIngredient);
                                                 dispatch({
-                                                    type: ADD_INGREDIENT,
+                                                    type: SELECT_INGREDIENT,
                                                     ingredient: nextIngredient
                                                 });
                                             }} />
@@ -100,8 +115,13 @@ export const BurgerIngredients = () => {
                 showModal && (
                     <Modal
                         header='Детали ингредиента'
-                        onClose={() => setShow(false)} >
-                        <IngredientDetails data={currentIngredient} />
+                        onClose={() => {
+                            setShow(false);
+                            dispatch({
+                                type: CLOSE_MODAL
+                            })
+                        }} >
+                        <IngredientDetails />
                     </Modal>
                 )
             }

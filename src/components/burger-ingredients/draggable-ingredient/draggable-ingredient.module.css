@@ -1,0 +1,10 @@
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dragIcon {
+    width: 32px;
+    top: 40%;
+}

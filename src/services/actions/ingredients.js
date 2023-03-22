@@ -16,11 +16,12 @@ export const getIngredients = () => dispatch => {
                 dispatch({
                     type: GET_INGREDIENTS_SUCCESS,
                     ingredients: data
-                })
+                });
             } else {
                 throw new Error(`Ошибка ${res.status}`)
             }
         } catch (err) {
+            console.log(err.message);
             dispatch({
                 type: GET_INGREDIENTS_FAILED
             });

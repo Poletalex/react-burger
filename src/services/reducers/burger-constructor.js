@@ -10,13 +10,17 @@ const initialState = {
 export const constructorReducer = (state = initialState, action) => {
     switch (action.type) { 
         case ADD_INGREDIENT: { 
-            return {
-                ...state,
-                selected: [
-                    ...state.selected,
-                    action.ingredient
-                ]
-            }
+            return action.ingredient.type === 'bun' ?
+                {
+                    ...state,
+                    selected: state.selected
+                        .filter(nextIngredient => nextIngredient.type !== 'bun')
+                        .concat(action.ingredient)
+                } :
+                {
+                    ...state,
+                    selected: state.selected.concat(action.ingredient)
+                }
         }
         case REMOVE_INGREDIENT: { 
             return {
