@@ -1,6 +1,6 @@
 import {
     SELECT_INGREDIENT,
-    CLOSE_MODAL
+    CLOSE_INGREDIENT_MODAL
 } from '../actions/modal';
 
 const initialState = {
@@ -12,7 +12,7 @@ export const modalReducer = (state = initialState, action) => {
         case SELECT_INGREDIENT: { 
             return { ingredient: action.ingredient };
         }
-        case CLOSE_MODAL: { 
+        case CLOSE_INGREDIENT_MODAL: { 
             return { ingredient: null };
         }
         default: { 

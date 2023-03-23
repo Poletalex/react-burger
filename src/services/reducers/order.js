@@ -1,7 +1,8 @@
 import {
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED
+    GET_ORDER_FAILED,
+    CLOSE_ORDER_MODAL
 } from '../actions/order';
 
 const initialState = {
@@ -31,6 +32,12 @@ export const orderReducer = (state = initialState, action) => {
                 ...state,
                 failed: true,
                 request: false
+            };
+        }
+        case CLOSE_ORDER_MODAL: { 
+            return {
+                ...state,
+                orderNum: null
             };
         }
         default: {

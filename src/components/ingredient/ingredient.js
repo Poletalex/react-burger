@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { dataType } from '../../utils/dataType';
 import styles from './ingredient.module.css';
 import { useDrag } from 'react-dnd/dist/hooks';
 import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+
+const makeSelectCount = () =>
+    createSelector(
+        store => store.burgerConstructor,
+        (_, data) => data,
+        ({ bun, notBun }, data) => [...notBun, bun]
+            .filter(nextIngredient => nextIngredient && nextIngredient._id === data._id).length
+    );
 
 export const Ingredient = ({ data, onClick }) => {
     const [, dragRef] = useDrag({
@@ -15,8 +24,8 @@ export const Ingredient = ({ data, onClick }) => {
         }
     });
 
-    const count = useSelector(store => store.burgerConstructor.selected)
-        .filter(nextIngredient => nextIngredient._id === data._id).length;
+    const selectCount = useMemo(makeSelectCount, []);
+    const count = useSelector(store => selectCount(store, data));
 
     return (
         <div

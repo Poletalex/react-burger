@@ -1,35 +1,25 @@
-import React, { useState, useMemo, useReducer, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_INGREDIENT, SORT_INGREDIENTS } from '../../services/actions/burger-constructor';
-import { createOrder } from '../../services/actions/order';
+import { ADD_INGREDIENT } from '../../services/actions/burger-constructor';
+import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
-
-const reducer = (state, action) => {
-    return action.data.reduce((sum, nextItem) => {
-        return sum + (nextItem.type === 'bun' ? nextItem.price * 2 : nextItem.price);
-    }, 0);
-};
+import { BUN } from '../../utils/constants';
 
 export const BurgerConstructor = () => {
-    const [showModal, setShow] = useState(false);
-    const [totalPrice, dispatchPrice] = useReducer(reducer, 0);
+    const { bun, notBun } = useSelector(store => store.burgerConstructor);
+    const fullData = useMemo(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
 
-    const data = useSelector(store => store.burgerConstructor.selected);
+    const totalPrice = useMemo(() => fullData.reduce((sum, nextItem) =>
+        sum + (nextItem.type === BUN ? nextItem.price * 2 : nextItem.price), 0), [fullData]);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatchPrice({ data: data });
-    }, [data]);
-
-    const bun = useMemo(() => data.find(nextIngredient => nextIngredient.type === 'bun'), [data]);
-
-    const { orderNum, request } = useSelector(store => store.order);
+    const { orderNum } = useSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
@@ -63,15 +53,12 @@ export const BurgerConstructor = () => {
             <div
                 className={styles.list + ' pr-4'}>
                 {
-                    data.map((nextIngredient, index) => {
-                        return (
-                            nextIngredient.type !== 'bun' &&
-                            <DraggableIngredient
-                                key={nextIngredient._id + Math.random()}
-                                index={index}
-                                data={nextIngredient}
-                            />);
-                    })
+                    notBun.map((nextIngredient, index) => (
+                        <DraggableIngredient
+                            key={nextIngredient._id + Math.random()}
+                            index={index}
+                            data={nextIngredient}
+                        />))
                 }
             </div>
             {
@@ -98,15 +85,16 @@ export const BurgerConstructor = () => {
                     type="primary"
                     size="medium"
                     onClick={() => {
-                        setShow(true);
-                        dispatch(createOrder(data));
+                        dispatch(createOrder(fullData));
                     }}>
                     Оформить заказ
                 </Button>
             </footer>
             {
-                showModal && data.length > 0 && orderNum && !request && (
-                    <Modal onClose={() => setShow(false)}>
+                orderNum && (
+                    <Modal onClose={() => dispatch({
+                        type: CLOSE_ORDER_MODAL
+                    })}>
                         <OrderDetails orderNum={orderNum} />
                     </Modal>
                 )

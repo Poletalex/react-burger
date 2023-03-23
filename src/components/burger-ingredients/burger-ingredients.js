@@ -1,44 +1,12 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import styles from './burger-ingredients.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { CLOSE_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
-
-const categories = [
-    {
-        type: 'bun',
-        title: 'Булки',
-        data: []
-    },
-    {
-        type: 'sauce',
-        title: 'Соусы',
-        data: []
-    },
-    {
-        type: 'main',
-        title: 'Начинки',
-        data: []
-    }
-];
-
-const getСategorizedData = data => {
-    const categorizedData = JSON.parse(JSON.stringify(categories));
-
-    if (data) {
-        data.forEach(nextIngredient => {
-            const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
-            if (category) {
-                category.data.push(nextIngredient);
-            }
-        });
-    }
-
-    return categorizedData;
-};
+import { CLOSE_INGREDIENT_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
+import { categories, getСategorizedData } from '../../utils/utils';
 
 export const BurgerIngredients = () => {
     const [activeTab, setTab] = useState(categories[0].title);
@@ -63,6 +31,13 @@ export const BurgerIngredients = () => {
         setTab(data[index].title);
     };
 
+    // навигация по нажатию табов
+    const tabsRef = useRef([]);
+    useEffect(() => {
+        tabsRef.current[categories.findIndex(nextTab => nextTab.title === activeTab)]
+            .scrollIntoView();
+    }, [activeTab, tabsRef]);
+
     return (
         <div className={styles.container + ' mr-10'}>
             <p className={styles.title + ' text text_type_main-medium mt-10 mb-5'}>
@@ -85,8 +60,9 @@ export const BurgerIngredients = () => {
                 className={styles.categories}
                 onScroll={handleScroll}>
                 {
-                    data && data.map(category => (
+                    data && data.map((category, index) => (
                         <div
+                            ref={node => tabsRef.current[index] = node}
                             key={category.type}
                             className={styles.category}>
                             <p className="text text_type_main-medium mt-10">
@@ -118,7 +94,7 @@ export const BurgerIngredients = () => {
                         onClose={() => {
                             setShow(false);
                             dispatch({
-                                type: CLOSE_MODAL
+                                type: CLOSE_INGREDIENT_MODAL
                             })
                         }} >
                         <IngredientDetails />
