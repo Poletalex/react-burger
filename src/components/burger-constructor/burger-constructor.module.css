@@ -5,6 +5,12 @@
     max-width: max-content;
 }
 
+.isHover {
+    box-shadow: 0px 0px 16px rgb(51 51 255 / 25%),
+        0px 0px 8px rgb(51 51 255 / 25%),
+        0px 4px 32px rgb(51 51 255 / 50%);;
+}
+
 .list {
     display: flex; 
     flex-direction: column; 
@@ -26,11 +32,6 @@
 .elementBottom {
     composes: element;
     margin-top: 10px;
-}
-
-.dragIcon {
-    width: 32px;
-    top: 40%;
 }
 
 .footer {

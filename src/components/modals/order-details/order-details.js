@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import doneIcon from '../../../images/done.svg';
 import styles from './order-details.module.css';
+import PropTypes from 'prop-types';
 
-export const OrderDetails = ({ orderId }) => {
+export const OrderDetails = ({ orderNum }) => {
+
     return (
         <div className={styles.content}>
             <p className={styles.order + " text text_type_digits-large mb-8"}>
-                {orderId}
+                {orderNum}
             </p>
             <p className="text text_type_main-medium">
                 идентификатор заказа
@@ -27,5 +28,5 @@ export const OrderDetails = ({ orderId }) => {
 };
 
 OrderDetails.propTypes = {
-    orderId: PropTypes.number.isRequired
+    orderNum: PropTypes.number.isRequired
 };

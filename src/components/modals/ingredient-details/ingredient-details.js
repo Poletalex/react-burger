@@ -1,24 +1,26 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { dataType } from '../../../utils/dataType';
+import { useSelector } from 'react-redux';
 
-export const IngredientDetails = ({ data }) => {
+export const IngredientDetails = () => {
+    const { ingredient } = useSelector(store => store.modal);
+
     return (
         <div className={styles.content}>
             <img
                 className='mb-4'
-                src={data.image_large}
-                alt={data.name} />
+                src={ingredient.image_large}
+                alt={ingredient.name} />
             <p className="text text_type_main-medium mb-8">
-                {data.name}
+                {ingredient.name}
             </p>
             <div className={styles.info + ' mb-15'}>
                 {
                     [
-                        ['Калории, ккал', data.calories],
-                        ['Белки, г', data.proteins],
-                        ['Жиры, г', data.fat],
-                        ['Углеводы, г', data.carbohydrates]
+                        ['Калории, ккал', ingredient.calories],
+                        ['Белки, г', ingredient.proteins],
+                        ['Жиры, г', ingredient.fat],
+                        ['Углеводы, г', ingredient.carbohydrates]
                     ].map(([name, value]) => (
                         < div
                             key={name}
@@ -35,8 +37,4 @@ export const IngredientDetails = ({ data }) => {
             </div>
         </div>
     );
-};
-
-IngredientDetails.propTypes = {
-    data: dataType
 };

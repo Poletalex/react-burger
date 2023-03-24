@@ -1,49 +1,42 @@
-import React, { useState, useMemo, useContext } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
-import { IngredientsContext } from '../app/app';
 import styles from './burger-ingredients.module.css';
-
-const categories = [
-    {
-        type: 'bun',
-        title: 'Булки',
-        data: []
-    },
-    {
-        type: 'sauce',
-        title: 'Соусы',
-        data: []
-    },
-    {
-        type: 'main',
-        title: 'Начинки',
-        data: []
-    }
-];
-
-const getСategorizedData = data => {
-    const categorizedData = JSON.parse(JSON.stringify(categories));
-
-    data.forEach(nextIngredient => {
-        const category = categorizedData.find(nextCat => nextCat.type === nextIngredient.type);
-        if (category) {
-            category.data.push(nextIngredient);
-        }
-    });
-    return categorizedData;
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { CLOSE_INGREDIENT_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
+import { categories, getСategorizedData } from '../../utils/utils';
 
 export const BurgerIngredients = () => {
-    const [current, setCurrent] = useState(categories[0].title);
+    const [activeTab, setTab] = useState(categories[0].title);
     const [showModal, setShow] = useState(false);
-    const [currentIngredient, setIngredient] = useState(null);
 
-    const { ingredients } = useContext(IngredientsContext);
+    const { ingredients } = useSelector(store => store.ingredients);
 
     const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
+    const dispatch = useDispatch();
+
+    const categoriesRef = useRef();
+
+    const handleScroll = event => {
+        const parentTop = categoriesRef.current.getBoundingClientRect().top;
+        const startDiff = Math.abs(event.currentTarget.children[0].getBoundingClientRect().top - parentTop);
+
+        const { index } = Array.from(event.currentTarget.children).reduce((prev, curr, index) => {
+            const diff = Math.abs(parentTop - curr.getBoundingClientRect().top);
+            return diff < prev.diff ? { diff, index } : prev;
+        }, { diff: startDiff, index: 0 });
+
+        setTab(data[index].title);
+    };
+
+    // навигация по нажатию табов
+    const tabsRef = useRef([]);
+    useEffect(() => {
+        tabsRef.current[categories.findIndex(nextTab => nextTab.title === activeTab)]
+            .scrollIntoView();
+    }, [activeTab, tabsRef]);
 
     return (
         <div className={styles.container + ' mr-10'}>
@@ -56,16 +49,20 @@ export const BurgerIngredients = () => {
                         <Tab
                             key={category.type}
                             value={category.title}
-                            active={current === category.title}
-                            onClick={setCurrent}>
+                            active={activeTab === category.title}
+                            onClick={setTab}>
                             {category.title}
                         </Tab>))
                 }
             </div>
-            <div className={styles.categories}>
+            <div
+                ref={categoriesRef}
+                className={styles.categories}
+                onScroll={handleScroll}>
                 {
-                    data && data.map(category => (
+                    data && data.map((category, index) => (
                         <div
+                            ref={node => tabsRef.current[index] = node}
                             key={category.type}
                             className={styles.category}>
                             <p className="text text_type_main-medium mt-10">
@@ -79,7 +76,10 @@ export const BurgerIngredients = () => {
                                             data={nextIngredient}
                                             onClick={() => {
                                                 setShow(true);
-                                                setIngredient(nextIngredient);
+                                                dispatch({
+                                                    type: SELECT_INGREDIENT,
+                                                    ingredient: nextIngredient
+                                                });
                                             }} />
                                     )
                                 }
@@ -91,8 +91,13 @@ export const BurgerIngredients = () => {
                 showModal && (
                     <Modal
                         header='Детали ингредиента'
-                        onClose={() => setShow(false)} >
-                        <IngredientDetails data={currentIngredient} />
+                        onClose={() => {
+                            setShow(false);
+                            dispatch({
+                                type: CLOSE_INGREDIENT_MODAL
+                            })
+                        }} >
+                        <IngredientDetails />
                     </Modal>
                 )
             }
