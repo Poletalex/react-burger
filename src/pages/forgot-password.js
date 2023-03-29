@@ -1,58 +1,40 @@
 import React, { useState } from "react";
-import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './register.module.css';
+import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
 
-export const RegisterPage = () => {
-    const [value, setValue] = useState({
-        email: '',
-        password: ''
-    });
-
-    const navigate = useNavigate();
+export const ForgotPage = () => {
+    const [value, setValue] = useState('');
 
     const onChange = event => {
-        setValue({ ...value, [event.target.name]: event.target.value });
+        setValue(event.target.value);
     };
+
+    const navigate = useNavigate();
 
     return (
         <main className={styles.main}>
             <p className="text text_type_main-medium mb-6">
-                Регистрация
+                Восстановление пароля
             </p>
-            <Input
-                type={'text'}
-                placeholder={'Имя'}
-                onChange={onChange}
-                value={value.name}
-                name={'name'}
-                error={false}
-                size={'default'}
-                extraClass="mb-6"
-            />
             <EmailInput
                 extraClass="mb-6"
+                placeholder={'Укажите e-mail'}
                 onChange={onChange}
-                value={value.email}
+                value={value}
                 name={'email'}
                 isIcon={false}
-            />
-            <PasswordInput
-                onChange={onChange}
-                value={value.password}
-                name={'password'}
-                extraClass="mb-6"
             />
             <Button
                 htmlType="button"
                 type="primary"
                 size="medium"
                 extraClass="mb-20">
-                Зарегистрироваться
+                Восстановить
             </Button>
             <div className={styles.footer}>
                 <p className="text text_type_main-default text_color_inactive mr-2">
-                    Уже зарегистрированы?
+                    Вспомнили пароль?
                 </p>
                 <Button
                     htmlType="button"

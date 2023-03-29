@@ -1,33 +1,29 @@
 import React from 'react';
-import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-
-const navClass = `${styles.nav} mr-2 mt-4 mb-4 pl-5 pr-5`;
+import { Navigation } from './navigation/navigation';
 
 export const AppHeader = () => {
     return (
         <header className={styles.container}>
-            <div className={navClass}>
-                <BurgerIcon type="primary" />
-                <p className="text text_type_main-default ml-2">
-                    Конструктор
-                </p>
-            </div>
-            <div className={navClass}>
-                <ListIcon type="secondary" />
-                <p className="text text_type_main-default text_color_inactive ml-2">
-                    Лента заказов
-                </p>
-            </div>
+            <Navigation
+                to='/'
+                title='Конструктор'
+                icon='burger'
+            />
+            <Navigation
+                to='/list'
+                title='Лента заказов'
+                icon='list'
+            />
             <div className={styles.logo}>
                 <Logo />
-            </div>            
-            <div className={navClass}>
-                <ProfileIcon type="secondary" />
-                <p className="text text_type_main-default text_color_inactive ml-2">
-                    Личный кабинет
-                </p>
-            </div>       
+            </div>
+            <Navigation
+                to='/profile'
+                title='Личный кабинет'
+                icon='profile'
+            />
         </header>
     );
 };

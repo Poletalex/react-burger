@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './register.module.css';
+import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
 
-export const RegisterPage = () => {
+export const ResetPage = () => {
     const [value, setValue] = useState({
-        email: '',
-        password: ''
+        password: '',
+        code: ''
     });
 
     const navigate = useNavigate();
@@ -18,29 +18,23 @@ export const RegisterPage = () => {
     return (
         <main className={styles.main}>
             <p className="text text_type_main-medium mb-6">
-                Регистрация
+                Восстановление пароля
             </p>
-            <Input
-                type={'text'}
-                placeholder={'Имя'}
-                onChange={onChange}
-                value={value.name}
-                name={'name'}
-                error={false}
-                size={'default'}
-                extraClass="mb-6"
-            />
-            <EmailInput
-                extraClass="mb-6"
-                onChange={onChange}
-                value={value.email}
-                name={'email'}
-                isIcon={false}
-            />
             <PasswordInput
+                placeholder={'Введите новый пароль'}                
                 onChange={onChange}
                 value={value.password}
                 name={'password'}
+                extraClass="mb-6"
+            />
+            <Input
+                type={'text'}
+                placeholder={'Введите код из письма'}
+                onChange={onChange}
+                value={value.code}
+                name={'code'}
+                error={false}
+                size={'default'}
                 extraClass="mb-6"
             />
             <Button
@@ -48,11 +42,11 @@ export const RegisterPage = () => {
                 type="primary"
                 size="medium"
                 extraClass="mb-20">
-                Зарегистрироваться
+                Сохранить
             </Button>
             <div className={styles.footer}>
                 <p className="text text_type_main-default text_color_inactive mr-2">
-                    Уже зарегистрированы?
+                    Вспомнили пароль?
                 </p>
                 <Button
                     htmlType="button"

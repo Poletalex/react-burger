@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
     const [value, setValue] = useState({
         email: '',
         password: ''
     });
+
+    const navigate = useNavigate();
+
     const onChange = event => {
         setValue({ ...value, [event.target.name]: event.target.value });
     };
@@ -43,7 +47,10 @@ export const LoginPage = () => {
                 <Button
                     htmlType="button"
                     type="secondary"
-                    size="medium">
+                    size="medium"
+                    onClick={() => {
+                        navigate('/register');
+                    }}>
                     Зарегистрироваться
                 </Button>
             </div>
@@ -54,7 +61,10 @@ export const LoginPage = () => {
                 <Button
                     htmlType="button"
                     type="secondary"
-                    size="medium">
+                    size="medium"
+                    onClick={() => {
+                        navigate('/forgot-password');
+                    }}>
                     Восстановить пароль
                 </Button>
             </div>
