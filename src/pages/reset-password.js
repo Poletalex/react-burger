@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "../services/actions/reset-password";
 
 export const ResetPage = () => {
     const [value, setValue] = useState({
         password: '',
-        code: ''
+        token: ''
     });
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const onChange = event => {
         setValue({ ...value, [event.target.name]: event.target.value });
@@ -31,8 +34,8 @@ export const ResetPage = () => {
                 type={'text'}
                 placeholder={'Введите код из письма'}
                 onChange={onChange}
-                value={value.code}
-                name={'code'}
+                value={value.token}
+                name={'token'}
                 error={false}
                 size={'default'}
                 extraClass="mb-6"
@@ -41,7 +44,8 @@ export const ResetPage = () => {
                 htmlType="button"
                 type="primary"
                 size="medium"
-                extraClass="mb-20">
+                extraClass="mb-20"
+                onClick={() => dispatch(resetPassword(value))}>
                 Сохранить
             </Button>
             <div className={styles.footer}>

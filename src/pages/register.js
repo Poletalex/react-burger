@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { register } from "../services/actions/register";
 
 export const RegisterPage = () => {
     const [value, setValue] = useState({
+        name: '',
         email: '',
         password: ''
     });
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const onChange = event => {
         setValue({ ...value, [event.target.name]: event.target.value });
@@ -47,7 +51,8 @@ export const RegisterPage = () => {
                 htmlType="button"
                 type="primary"
                 size="medium"
-                extraClass="mb-20">
+                extraClass="mb-20"
+                onClick={() => dispatch(register(value))}>
                 Зарегистрироваться
             </Button>
             <div className={styles.footer}>

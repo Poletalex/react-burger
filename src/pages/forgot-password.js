@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
+import { forgotPassword, FORGOT_PASSWORD_CLOSE } from "../services/actions/forgot-password";
+import { useDispatch, useSelector } from "react-redux";
 
 export const ForgotPage = () => {
     const [value, setValue] = useState('');
@@ -11,6 +13,18 @@ export const ForgotPage = () => {
     };
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { success } = useSelector(store => store.forgotPassword);
+
+    useEffect(() => {
+        if (success) { 
+            dispatch({
+                type: FORGOT_PASSWORD_CLOSE
+            });
+            navigate('/reset-password');
+        }
+    }, [success, dispatch, navigate]);
 
     return (
         <main className={styles.main}>
@@ -29,7 +43,8 @@ export const ForgotPage = () => {
                 htmlType="button"
                 type="primary"
                 size="medium"
-                extraClass="mb-20">
+                extraClass="mb-20"
+                onClick={() => dispatch(forgotPassword(value))}>
                 Восстановить
             </Button>
             <div className={styles.footer}>

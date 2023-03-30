@@ -1,4 +1,4 @@
-import { BUN, MAIN, SAUCE } from "./constants";
+import { BUN, DATA_SOURCE, MAIN, SAUCE } from "./constants";
 
 export const getFilteredData = arr => {
     let hasBun = false;
@@ -47,4 +47,42 @@ export const getСategorizedData = data => {
     }
 
     return categorizedData;
+};
+
+const checkReponse = (res) => {
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+export const refreshToken = async () => {
+    const res = await fetch(DATA_SOURCE + 'auth/token', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("refreshToken"),
+        }),
+    });
+    return checkReponse(res);
+};
+
+export const fetchWithRefresh = async (url, options) => {
+    try {
+        const res = await fetch(url, options);
+        return await checkReponse(res);
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            const refreshData = await refreshToken();
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            options.headers.authorization = refreshData.accessToken;
+            const res = await fetch(url, options);
+            return await checkReponse(res);
+        } else {
+            return Promise.reject(err);
+        }
+    }
 };
