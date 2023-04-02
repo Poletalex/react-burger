@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from "react-router-dom";
-import { useAuth } from '../../services/auth';
+import { checkUserAuth } from '../../services/action';
 
-export const ProtectedRouteElement = ({ element }) => {
-    let { getUser, ...auth } = useAuth();
-    const [isUserLoaded, setUserLoaded] = useState(false);
+export const ProtectedRouteElement = ({ withAuth = true, element }) => {
+    const { user, isAuthChecked } = useSelector(store => store.user);
 
-    const init = async () => {
-        await getUser();
-        setUserLoaded(true);
-    };
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        init();
+        dispatch(checkUserAuth());
+        // eslint-disable-next-line
     }, []);
 
-    if (!isUserLoaded) {
+    if (!isAuthChecked) {
         return null;
     }
 
-    return auth.user ? element : <Navigate to="/login" replace />;
+    if (withAuth && !user) { 
+        return <Navigate to="/login" replace />;
+    }
+
+    if (!withAuth && user) {
+        return <Navigate to="/" replace />;
+    }
+
+    return element;
 }; 
+
+export const WithAuth = ProtectedRouteElement;
+export const WithoutAuth = props => <ProtectedRouteElement withAuth={false} {...props} />

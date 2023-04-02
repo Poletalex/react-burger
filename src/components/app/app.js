@@ -10,28 +10,32 @@ import { RegisterPage } from '../../pages/register';
 import { ForgotPage } from '../../pages/forgot-password';
 import { ResetPage } from '../../pages/reset-password';
 import { ProfilePage } from '../../pages/profile';
+import { WithAuth, WithoutAuth } from '../protected-route.js/protected-route';
+import { NotFound404 } from '../../pages/404';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
-    <div className={styles.app}>  
+    <div className={styles.app}>
       <Router>
         <AppHeader />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPage />} />
-          <Route path="/reset-password" element={<ResetPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<WithoutAuth element={< LoginPage />} />} />
+          <Route path="/register" element={<WithoutAuth element={< RegisterPage />} />} />
+          <Route path="/forgot-password" element={<WithoutAuth element={<ForgotPage />} />} />
+          <Route path="/reset-password" element={<WithoutAuth element={<ResetPage />} />} />
+          <Route path="/profile" element={<WithAuth element={<ProfilePage />} />} />
+          <Route path="*" element={<NotFound404 />} />
         </Routes>
-      </Router>   
-    </div>    
+      </Router>
+    </div>
   );
 }
 

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
+import { useSelector } from "react-redux";
 
 export const ProfilePage = () => {
+    const { user } = useSelector(store => store.user);
+
     const [value, setValue] = useState({
-        name: '',
-        login: '',
-        password: ''
+        name: user.name || '',
+        login: user.email || '',
+        password: user.password || ''
     });
 
     const onChange = event => {
@@ -24,7 +27,7 @@ export const ProfilePage = () => {
                 </p>
                 <p className="text text_type_main-medium">
                     Выход
-                </p>    
+                </p>
                 <p className="text text_type_main-default text_color_inactive mt-20">
                     В этом разделе вы можете
                     изменить свои персональные данные
@@ -60,7 +63,7 @@ export const ProfilePage = () => {
                     name={'password'}
                     icon={'EditIcon'}
                 />
-            </div>            
+            </div>
         </main>
     );
 };

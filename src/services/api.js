@@ -1,26 +1,17 @@
-import { getCookie } from './utils';
+import { DATA_SOURCE } from '../utils/constants';
+import { fetchWithRefresh } from '../utils/utils';
 
-export const loginRequest = async form => {
-  return await fetch('login', {
+export const logoutRequest = async () => {
+  return await fetch(DATA_SOURCE + 'auth/logout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
+    }
   });
 };
 
-export const getUserRequest = async () =>
-  await fetch('api/user', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + getCookie('token')
-    }
-  });
-
-export const logoutRequest = async () => {
-  return await fetch('logout', {
+export const refreshTokenRequest = async () => {
+  return await fetchWithRefresh(DATA_SOURCE + 'auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

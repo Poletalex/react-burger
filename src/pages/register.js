@@ -3,10 +3,10 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { register } from "../services/actions/register";
+import { register } from "../services/action";
 
 export const RegisterPage = () => {
-    const [value, setValue] = useState({
+    const [form, setForm] = useState({
         name: '',
         email: '',
         password: ''
@@ -16,7 +16,7 @@ export const RegisterPage = () => {
     const dispatch = useDispatch();
 
     const onChange = event => {
-        setValue({ ...value, [event.target.name]: event.target.value });
+        setForm({ ...form, [event.target.name]: event.target.value });
     };
 
     return (
@@ -28,7 +28,7 @@ export const RegisterPage = () => {
                 type={'text'}
                 placeholder={'Имя'}
                 onChange={onChange}
-                value={value.name}
+                value={form.name}
                 name={'name'}
                 error={false}
                 size={'default'}
@@ -37,13 +37,13 @@ export const RegisterPage = () => {
             <EmailInput
                 extraClass="mb-6"
                 onChange={onChange}
-                value={value.email}
+                value={form.email}
                 name={'email'}
                 isIcon={false}
             />
             <PasswordInput
                 onChange={onChange}
-                value={value.password}
+                value={form.password}
                 name={'password'}
                 extraClass="mb-6"
             />
@@ -52,7 +52,7 @@ export const RegisterPage = () => {
                 type="primary"
                 size="medium"
                 extraClass="mb-20"
-                onClick={() => dispatch(register(value))}>
+                onClick={() => dispatch(register(form))}>
                 Зарегистрироваться
             </Button>
             <div className={styles.footer}>
