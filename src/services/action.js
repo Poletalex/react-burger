@@ -1,5 +1,6 @@
 import { DATA_SOURCE } from "../utils/constants";
-import {setAuthChecked, setUser} from "./user";
+import { fetchWithRefresh } from "../utils/utils";
+import { setAuthChecked, setUser } from "./user";
 
 export const checkUserAuth = () => dispatch => {
     if (localStorage.getItem('accessToken')) {
@@ -9,7 +10,7 @@ export const checkUserAuth = () => dispatch => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             dispatch(setUser(null));
-        } finally { 
+        } finally {
             dispatch(setAuthChecked(true));
         }
     } else {
@@ -66,7 +67,7 @@ export const register = ({ name, email, password }) => dispatch => {
                 } else {
                     throw new Error(`Ошибка ${res.status}`)
                 }
-            } catch {};
+            } catch { };
         })();
     }
 };
@@ -94,7 +95,31 @@ export const login = ({ email, password }) => dispatch => {
                 } else {
                     throw new Error(`Ошибка ${res.status}`)
                 }
-            } catch {};
+            } catch { };
         })();
     }
+};
+
+export const logout = () => dispatch => {
+    (async () => {
+        try {
+            const res = await fetchWithRefresh(DATA_SOURCE + 'auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (res.ok) {
+                const { success } = await res.json();
+                if (success) {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    dispatch(setUser(null));
+                    dispatch(setAuthChecked(false));
+                }
+            } else {
+                throw new Error(`Ошибка ${res.status}`)
+            }
+        } catch { };
+    })();
 };

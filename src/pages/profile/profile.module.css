@@ -32,3 +32,22 @@
 .footer button {
     padding: 0;
 }
+
+.nav {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.navLink {
+    composes: nav;
+}
+
+.activeNavLink {
+    composes: nav;
+}
+
+.activeNavLink p {
+    color: white;
+}

@@ -6,6 +6,7 @@ import styles from './ingredient.module.css';
 import { useDrag } from 'react-dnd/dist/hooks';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Link, useLocation } from 'react-router-dom';
 
 const makeSelectCount = () =>
     createSelector(
@@ -16,6 +17,7 @@ const makeSelectCount = () =>
     );
 
 export const Ingredient = ({ data, onClick }) => {
+    const location = useLocation();
     const [, dragRef] = useDrag({
         type: 'ingredient',
         item: {
@@ -28,27 +30,32 @@ export const Ingredient = ({ data, onClick }) => {
     const count = useSelector(store => selectCount(store, data));
 
     return (
-        <div
-            className={styles.container + ' ml-4 mt-6 mb-10'}
-            ref={dragRef}>
-            <img
-                src={data.image}
-                alt={data.name}
-                className='ml-4 mb-1'
-                onClick={onClick} />
-            {
-                count > 0 && (<Counter count={count} size="default" extraClass="m-1" />)
-            }
-            <div className={styles.price + ' mb-1'}>
-                <p className={styles.price + ' text text_type_digits-default pr-1'}>
-                    {data.price}
+        <Link
+            key={data._id}
+            to={`/ingredients/${data._id}`}
+            state={{ background: location }}
+            className={styles.container + ' ml-4 mt-6 mb-10'}>
+            <div                
+                ref={dragRef}>
+                <img
+                    src={data.image}
+                    alt={data.name}
+                    className='ml-4 mb-1'
+                    onClick={onClick} />
+                {
+                    count > 0 && (<Counter count={count} size="default" extraClass="m-1" />)
+                }
+                <div className={styles.price + ' mb-1'}>
+                    <p className={styles.price + ' text text_type_digits-default pr-1'}>
+                        {data.price}
+                    </p>
+                    <CurrencyIcon type="primary" />
+                </div>
+                <p className={styles.name + ' text text_type_main-default'}>
+                    {data.name}
                 </p>
-                <CurrencyIcon type="primary" />
             </div>
-            <p className={styles.name + ' text text_type_main-default'}>
-                {data.name}
-            </p>
-        </div>
+        </Link>        
     );
 };
 

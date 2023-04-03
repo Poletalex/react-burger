@@ -9,6 +9,7 @@ import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
 import { BUN } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
     const { bun, notBun } = useSelector(store => store.burgerConstructor);
@@ -33,6 +34,12 @@ export const BurgerConstructor = () => {
             isHover: monitor.isOver(),
         })
     });
+
+    const { user } = useSelector(store => store.user);
+    const navigate = useNavigate();
+    const createOrderHandler = () => {
+        user ? dispatch(createOrder(fullData)) : navigate('/login');
+    };
 
     return (
         <div
@@ -84,9 +91,7 @@ export const BurgerConstructor = () => {
                     htmlType="button"
                     type="primary"
                     size="medium"
-                    onClick={() => {
-                        dispatch(createOrder(fullData));
-                    }}>
+                    onClick={createOrderHandler}>
                     Оформить заказ
                 </Button>
             </footer>

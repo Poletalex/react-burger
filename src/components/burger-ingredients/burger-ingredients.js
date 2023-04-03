@@ -75,7 +75,6 @@ export const BurgerIngredients = () => {
                                             key={nextIngredient._id}
                                             data={nextIngredient}
                                             onClick={() => {
-                                                setShow(true);
                                                 dispatch({
                                                     type: SELECT_INGREDIENT,
                                                     ingredient: nextIngredient

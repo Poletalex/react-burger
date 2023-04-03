@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
-import { useSelector } from "react-redux";
+import { ProfileNavigation } from "./profile-navigation";
 
-export const ProfilePage = () => {
+export const ProfileForm = () => {
     const { user } = useSelector(store => store.user);
 
     const [value, setValue] = useState({
@@ -17,17 +18,9 @@ export const ProfilePage = () => {
     };
 
     return (
-        <main className={styles.main}>
+        <div className={styles.main}>
             <div className={styles.menu}>
-                <p className="text text_type_main-medium">
-                    Профиль
-                </p>
-                <p className="text text_type_main-medium">
-                    История заказов
-                </p>
-                <p className="text text_type_main-medium">
-                    Выход
-                </p>
+                <ProfileNavigation />
                 <p className="text text_type_main-default text_color_inactive mt-20">
                     В этом разделе вы можете
                     изменить свои персональные данные
@@ -64,6 +57,7 @@ export const ProfilePage = () => {
                     icon={'EditIcon'}
                 />
             </div>
-        </main>
+        </div>
     );
+
 };

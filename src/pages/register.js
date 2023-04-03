@@ -52,7 +52,7 @@ export const RegisterPage = () => {
                 type="primary"
                 size="medium"
                 extraClass="mb-20"
-                onClick={() => dispatch(register(form))}>
+                onClick={() => dispatch(register (form))}>
                 Зарегистрироваться
             </Button>
             <div className={styles.footer}>
