@@ -42,7 +42,7 @@ const App = () => {
         <Route path="/profile/orders" element={<WithAuth element={<OrdersHistory />} />} />
         <Route path="/profile/orders/:id" element={<WithAuth element={<ProfileNavigation />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />
-        <Route path="/logout" element={<WithoutAuth element={< Logout />} />} />
+        <Route path="/logout" element={<WithAuth element={< Logout />} />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
       {

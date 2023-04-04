@@ -1,21 +1,30 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { ProfileNavigation } from "./profile-navigation";
+import { patchUser } from "../../services/action";
 
 export const ProfileForm = () => {
     const { user } = useSelector(store => store.user);
+    const dispatch = useDispatch();
 
-    const [value, setValue] = useState({
-        name: user.name || '',
-        login: user.email || '',
-        password: user.password || ''
-    });
+    const initValue = {
+        name: user.name,
+        email: user.email,
+        password: ''
+    };
+
+    const [value, setValue] = useState(initValue);
 
     const onChange = event => {
         setValue({ ...value, [event.target.name]: event.target.value });
     };
+
+    const isChanged = useCallback(() =>
+        user.name !== value.name ||
+        user.email !== value.email ||
+        !!value.password, [user, value]);
 
     return (
         <div className={styles.main}>
@@ -42,8 +51,8 @@ export const ProfileForm = () => {
                     type={'text'}
                     placeholder={'Логин'}
                     onChange={onChange}
-                    value={value.login}
-                    name={'login'}
+                    value={value.email}
+                    name={'email'}
                     error={false}
                     size={'default'}
                     extraClass="mb-6"
@@ -55,7 +64,29 @@ export const ProfileForm = () => {
                     value={value.password}
                     name={'password'}
                     icon={'EditIcon'}
+                    extraClass="mb-6"
                 />
+                {
+                    isChanged() && (
+                        <div className={styles.buttons}>
+                            <Button
+                                htmlType="button"
+                                type="primary"
+                                size="medium"
+                                extraClass="mr-4"
+                                onClick={() => dispatch(patchUser(value))}>
+                                Сохранить
+                            </Button>
+                            <Button
+                                htmlType="button"
+                                type="primary"
+                                size="medium"
+                                onClick={() => { setValue(initValue); }}>
+                                Отмена
+                            </Button>
+                        </div>
+                    )
+                }
             </div>
         </div>
     );

@@ -1,5 +1,4 @@
 import { DATA_SOURCE } from "../utils/constants";
-import { fetchWithRefresh } from "../utils/utils";
 import { setAuthChecked, setUser } from "./user";
 
 export const checkUserAuth = () => dispatch => {
@@ -41,6 +40,29 @@ export const getUser = () => dispatch => {
             localStorage.removeItem('refreshToken');
             dispatch(setUser(null));
         };
+    })();
+};
+
+export const patchUser = body => dispatch => {
+    (async () => {
+        try {
+            const res = await fetch(DATA_SOURCE + 'auth/user', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                },
+                body: body && JSON.stringify(body)
+            });
+            if (res.ok) {
+                const { success, user } = await res.json();
+                if (success) {
+                    dispatch(setUser(user));
+                }
+            } else {
+                throw new Error(`Ошибка ${res.status}`)
+            }
+        } catch {};
     })();
 };
 
@@ -103,11 +125,14 @@ export const login = ({ email, password }) => dispatch => {
 export const logout = () => dispatch => {
     (async () => {
         try {
-            const res = await fetchWithRefresh(DATA_SOURCE + 'auth/login', {
+            const res = await fetch(DATA_SOURCE + 'auth/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    token: localStorage.getItem("refreshToken"),
+                }),
             });
             if (res.ok) {
                 const { success } = await res.json();
