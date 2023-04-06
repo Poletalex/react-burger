@@ -1,4 +1,4 @@
-import { BUN, DATA_SOURCE, MAIN, SAUCE } from "./constants";
+import { BUN, BURGER_API, MAIN, SAUCE } from "./constants";
 
 export const getFilteredData = arr => {
     let hasBun = false;
@@ -49,12 +49,22 @@ export const getСategorizedData = data => {
     return categorizedData;
 };
 
-const checkReponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+export const customFetch = async (endpoint, options) => {
+    const res = await fetch(`${BURGER_API}${endpoint}`, options);
+    if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+            return data;
+        } else {
+            throw new Error(`Ответ не success: ${data}`);
+        }
+    } else {
+        throw new Error(`Ошибка ${res.status}`)
+    }
 };
 
-export const refreshToken = async () => {
-    const res = await fetch(DATA_SOURCE + 'auth/token', {
+export const tokenRefresh = async () => {
+    const res = await customFetch('auth/token', {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -63,26 +73,23 @@ export const refreshToken = async () => {
             token: localStorage.getItem("refreshToken"),
         }),
     });
-    return checkReponse(res);
+    return res;
 };
 
 export const fetchWithRefresh = async (url, options) => {
     try {
-        const res = await fetch(url, options);
-        return await checkReponse(res);
+        const res = await customFetch(url, options);
+        return res;
     } catch (err) {
         if (err.message === "jwt expired") {
-            const refreshData = await refreshToken();
-            if (!refreshData.success) {
-                return Promise.reject(refreshData);
-            }
-            localStorage.setItem("refreshToken", refreshData.refreshToken);
-            localStorage.setItem("accessToken", refreshData.accessToken);
-            options.headers.authorization = refreshData.accessToken;
-            const res = await fetch(url, options);
-            return await checkReponse(res);
+            const { accessToken, refreshToken } = await tokenRefresh();
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("accessToken", accessToken);
+            options.headers.authorization = accessToken;
+            const res = await customFetch(url, options);
+            return res;
         } else {
-            return Promise.reject(err);
+            throw err;
         }
     }
 };

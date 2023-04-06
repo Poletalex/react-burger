@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './ingredient-details.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getIngredients } from '../../../services/actions/ingredients';
 
 export const IngredientDetails = () => {
-    const dispatch = useDispatch();
     const { ingredient } = useSelector(store => store.modal);
     const { ingredients } = useSelector(store => store.ingredients);
     const { ingredientId } = useParams(); 
     const currentIngredient = ingredient || ingredients?.find(nextIngredient => nextIngredient._id === ingredientId);
-
-    useEffect(() => {
-        if (!ingredients) {
-            dispatch(getIngredients());
-        }        
-        // eslint-disable-next-line
-    }, []);
 
     return currentIngredient && (
         <div className={styles.content}>

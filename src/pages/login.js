@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
-import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { login } from "../services/action";
+import { useForm } from "../hooks/useForm";
 
 export const LoginPage = () => {
-    const { user } = useSelector(store => store.user);
-
-    const [form, setForm] = useState({
+    const { form, onChange } = useForm({
         email: '',
         password: ''
     });
@@ -16,16 +15,15 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const onChange = event => {
-        setForm({ ...form, [event.target.name]: event.target.value });
+    const handleSubmit = event => {
+        event.preventDefault();
+        dispatch(login(form));
     };
 
-    if (user) {
-        return (<Navigate to={'/'} />);
-    }
-
     return (
-        <main className={styles.main}>
+        <form
+            onSubmit={handleSubmit}
+            className={styles.main}>
             <p className="text text_type_main-medium mb-6">
                 Вход
             </p>
@@ -43,11 +41,10 @@ export const LoginPage = () => {
                 extraClass="mb-6"
             />
             <Button
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="medium"
-                extraClass="mb-20"
-                onClick={() => dispatch(login(form))}>
+                extraClass="mb-20">
                 Войти
             </Button>
             <div className={styles.footer + ' mb-4'}>
@@ -78,6 +75,6 @@ export const LoginPage = () => {
                     Восстановить пароль
                 </Button>
             </div>
-        </main>
+        </form>
     );
 };

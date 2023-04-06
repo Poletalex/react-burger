@@ -4,6 +4,7 @@ import {
     REMOVE_INGREDIENT,
     SORT_INGREDIENTS
 } from "../actions/burger-constructor";
+import { v4 as uuid } from 'uuid';
 
 const initialState = {
     bun: null,
@@ -20,7 +21,10 @@ export const constructorReducer = (state = initialState, action) => {
                 } :
                 {
                     ...state,
-                    notBun: state.notBun.concat(action.ingredient)
+                    notBun: state.notBun.concat({
+                        ...action.ingredient,
+                        uniqueId: uuid()
+                    })
                 };
         }
         case REMOVE_INGREDIENT: { 

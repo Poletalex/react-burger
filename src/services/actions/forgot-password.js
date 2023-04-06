@@ -1,4 +1,4 @@
-import { DATA_SOURCE } from "../../utils/constants";
+import { customFetch } from "../../utils/utils";
 
 export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
 export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
@@ -12,21 +12,14 @@ export const forgotPassword = email => dispatch => {
         });
         (async () => {
             try {
-                const res = await fetch(DATA_SOURCE + 'password-reset', {
+                await customFetch('password-reset', {
                     method: 'POST',
                     body: JSON.stringify({ email })
                 });
-                if (res.ok) {
-                    const { success } = await res.json();
-                    if (success) {
-                        dispatch({
-                            type: FORGOT_PASSWORD_SUCCESS
-                        });
-                    }
-                } else {
-                    throw new Error(`Ошибка ${res.status}`)
-                }
-            } catch (err) {
+                dispatch({
+                    type: FORGOT_PASSWORD_SUCCESS
+                });
+            } catch {
                 dispatch({
                     type: FORGOT_PASSWORD_FAILED
                 });

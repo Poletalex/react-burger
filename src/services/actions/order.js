@@ -1,4 +1,4 @@
-import { DATA_SOURCE } from "../../utils/constants";
+import { customFetch } from "../../utils/utils";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
@@ -13,7 +13,7 @@ export const createOrder = data => dispatch => {
     (async () => {
         try {
             if (data.length > 0) {
-                const res = await fetch(DATA_SOURCE + 'orders', {
+                const res = await customFetch('orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
@@ -22,17 +22,12 @@ export const createOrder = data => dispatch => {
                         "ingredients": data.map(nextIngredient => nextIngredient._id)
                     })
                 });
-                if (res.ok) {
-                    const { order } = await res.json();
-                    dispatch({
-                        type: GET_ORDER_SUCCESS,
-                        orderNum: order.number
-                    })
-                } else {
-                    throw new Error(`Ошибка ${res.status}`)
-                }
+                dispatch({
+                    type: GET_ORDER_SUCCESS,
+                    orderNum: res.order.number
+                })
             }
-        } catch (err) {
+        } catch {
             dispatch({
                 type: GET_ORDER_FAILED
             });

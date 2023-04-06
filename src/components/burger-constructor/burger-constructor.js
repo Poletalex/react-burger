@@ -62,7 +62,7 @@ export const BurgerConstructor = () => {
                 {
                     notBun.map((nextIngredient, index) => (
                         <DraggableIngredient
-                            key={nextIngredient._id + Math.random()}
+                            key={nextIngredient.uniqueId}
                             index={index}
                             data={nextIngredient}
                         />))
@@ -87,13 +87,17 @@ export const BurgerConstructor = () => {
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button
-                    htmlType="button"
-                    type="primary"
-                    size="medium"
-                    onClick={createOrderHandler}>
-                    Оформить заказ
-                </Button>
+                {
+                    bun ?
+                        (<Button
+                            htmlType="button"
+                            type="primary"
+                            size="medium"
+                            onClick={createOrderHandler}>
+                            Оформить заказ
+                        </Button>) :
+                        (<p className="text text_type_main-medium">Не хватает булок для заказа</p>)
+                }
             </footer>
             {
                 orderNum && (

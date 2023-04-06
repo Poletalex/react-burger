@@ -51,7 +51,9 @@ const App = () => {
             <Route
               path='/ingredients/:ingredientId'
               element={
-                <Modal onClose={() => { navigate(-1); }}>
+                <Modal
+                  header='Детали ингредиента'
+                  onClose={() => { navigate(-1); }}>
                   <IngredientDetails />
                 </Modal>
               }

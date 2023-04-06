@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
 import { forgotPassword, FORGOT_PASSWORD_CLOSE } from "../services/actions/forgot-password";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "../hooks/useForm";
 
 export const ForgotPage = () => {
-    const [value, setValue] = useState('');
-
-    const onChange = event => {
-        setValue(event.target.value);
-    };
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { success } = useSelector(store => store.forgotPassword);
 
+    const { form, onChange } = useForm({ email: '' });
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        dispatch(forgotPassword(form));
+    };
+
     useEffect(() => {
-        if (success) { 
+        if (success) {
             dispatch({
                 type: FORGOT_PASSWORD_CLOSE
             });
-            navigate('/reset-password');
+            navigate('/reset-password', { state: { prev: '/forgot-password', replace: true } });
         }
     }, [success, dispatch, navigate]);
 
     return (
-        <main className={styles.main}>
+        <form
+            onSubmit={handleSubmit}
+            className={styles.main}>
             <p className="text text_type_main-medium mb-6">
                 Восстановление пароля
             </p>
@@ -35,16 +39,15 @@ export const ForgotPage = () => {
                 extraClass="mb-6"
                 placeholder={'Укажите e-mail'}
                 onChange={onChange}
-                value={value}
+                value={form.email}
                 name={'email'}
                 isIcon={false}
             />
             <Button
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="medium"
-                extraClass="mb-20"
-                onClick={() => dispatch(forgotPassword(value))}>
+                extraClass="mb-20">
                 Восстановить
             </Button>
             <div className={styles.footer}>
@@ -61,6 +64,6 @@ export const ForgotPage = () => {
                     Войти
                 </Button>
             </div>
-        </main>
+        </form>
     );
 };

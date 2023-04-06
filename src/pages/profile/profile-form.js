@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { ProfileNavigation } from "./profile-navigation";
 import { patchUser } from "../../services/action";
+import { useForm } from "../../hooks/useForm";
 
 export const ProfileForm = () => {
     const { user } = useSelector(store => store.user);
@@ -15,16 +16,21 @@ export const ProfileForm = () => {
         password: ''
     };
 
-    const [value, setValue] = useState(initValue);
+    const { form, setForm, onChange } = useForm(initValue);
 
-    const onChange = event => {
-        setValue({ ...value, [event.target.name]: event.target.value });
+    const save = event => {
+        event.preventDefault();
+        dispatch(patchUser(form));
+    };
+
+    const cancel = () => {
+        setForm(initValue);
     };
 
     const isChanged = useCallback(() =>
-        user.name !== value.name ||
-        user.email !== value.email ||
-        !!value.password, [user, value]);
+        user.name !== form.name ||
+        user.email !== form.email ||
+        !!form.password, [user, form]);
 
     return (
         <div className={styles.main}>
@@ -35,12 +41,14 @@ export const ProfileForm = () => {
                     изменить свои персональные данные
                 </p>
             </div>
-            <div className={styles.form + ' ml-15'}>
+            <form
+                onSubmit={save}
+                className={styles.form + ' ml-15'}>
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
                     onChange={onChange}
-                    value={value.name}
+                    value={form.name}
                     name={'name'}
                     error={false}
                     size={'default'}
@@ -51,7 +59,7 @@ export const ProfileForm = () => {
                     type={'text'}
                     placeholder={'Логин'}
                     onChange={onChange}
-                    value={value.email}
+                    value={form.email}
                     name={'email'}
                     error={false}
                     size={'default'}
@@ -61,7 +69,7 @@ export const ProfileForm = () => {
                 <PasswordInput
                     placeholder={'Пароль'}
                     onChange={onChange}
-                    value={value.password}
+                    value={form.password}
                     name={'password'}
                     icon={'EditIcon'}
                     extraClass="mb-6"
@@ -70,24 +78,23 @@ export const ProfileForm = () => {
                     isChanged() && (
                         <div className={styles.buttons}>
                             <Button
-                                htmlType="button"
+                                htmlType="submit"
                                 type="primary"
                                 size="medium"
-                                extraClass="mr-4"
-                                onClick={() => dispatch(patchUser(value))}>
+                                extraClass="mr-4">
                                 Сохранить
                             </Button>
                             <Button
                                 htmlType="button"
                                 type="primary"
                                 size="medium"
-                                onClick={() => { setValue(initValue); }}>
+                                onClick={cancel}>
                                 Отмена
                             </Button>
                         </div>
                     )
                 }
-            </div>
+            </form>
         </div>
     );
 
