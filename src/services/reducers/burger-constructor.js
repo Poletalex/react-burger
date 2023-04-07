@@ -1,6 +1,7 @@
 import { BUN } from "../../utils/constants";
 import {
     ADD_INGREDIENT,
+    CLEAR_INGREDIENTS,
     REMOVE_INGREDIENT,
     SORT_INGREDIENTS
 } from "../actions/burger-constructor";
@@ -45,6 +46,9 @@ export const constructorReducer = (state = initialState, action) => {
                 ...state,
                 notBun: newArr
             };
+        }
+        case CLEAR_INGREDIENTS: { 
+            return initialState;
         }
         default: { 
             return state;

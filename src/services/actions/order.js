@@ -1,4 +1,5 @@
 import { customFetch } from "../../utils/utils";
+import { CLEAR_INGREDIENTS } from "./burger-constructor";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
@@ -26,6 +27,10 @@ export const createOrder = data => dispatch => {
                     type: GET_ORDER_SUCCESS,
                     orderNum: res.order.number
                 })
+
+                dispatch({
+                    type: CLEAR_INGREDIENTS
+                });
             }
         } catch {
             dispatch({

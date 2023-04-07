@@ -2,6 +2,7 @@ import React from 'react';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 import { Navigation } from './navigation/navigation';
+import { Link } from 'react-router-dom';
 
 export const AppHeader = () => {
     return (
@@ -16,9 +17,11 @@ export const AppHeader = () => {
                 title='Лента заказов'
                 icon='list'
             />
-            <div className={styles.logo}>
+            <Link
+                to='/'
+                className={styles.logo}>
                 <Logo />
-            </div>
+            </Link>
             <Navigation
                 to='/profile'
                 title='Личный кабинет'

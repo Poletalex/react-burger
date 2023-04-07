@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
@@ -10,6 +10,7 @@ import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
 import { BUN } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { Loader } from '../loader/loader';
 
 export const BurgerConstructor = () => {
     const { bun, notBun } = useSelector(store => store.burgerConstructor);
@@ -20,7 +21,7 @@ export const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
 
-    const { orderNum } = useSelector(store => store.order);
+    const { orderNum, request } = useSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
@@ -37,9 +38,10 @@ export const BurgerConstructor = () => {
 
     const { user } = useSelector(store => store.user);
     const navigate = useNavigate();
-    const createOrderHandler = () => {
+    
+    const createOrderHandler = useCallback(() => {
         user ? dispatch(createOrder(fullData)) : navigate('/login');
-    };
+    }, [user, dispatch, fullData, navigate]);
 
     return (
         <div
@@ -100,11 +102,16 @@ export const BurgerConstructor = () => {
                 }
             </footer>
             {
-                orderNum && (
+                (request || orderNum) && (
                     <Modal onClose={() => dispatch({
                         type: CLOSE_ORDER_MODAL
                     })}>
-                        <OrderDetails orderNum={orderNum} />
+                        {
+                            request && (<Loader />)
+                        }
+                        {
+                            orderNum && (<OrderDetails orderNum={orderNum} />)
+                        }
                     </Modal>
                 )
             }
