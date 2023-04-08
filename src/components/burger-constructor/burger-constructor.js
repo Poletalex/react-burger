@@ -4,7 +4,7 @@ import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_INGREDIENT } from '../../services/actions/burger-constructor';
+import { addIngredient } from '../../services/actions/burger-constructor';
 import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
@@ -26,10 +26,7 @@ export const BurgerConstructor = () => {
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
         drop(item) {
-            dispatch({
-                type: ADD_INGREDIENT,
-                ingredient: item.ingredient
-            });
+            dispatch(addIngredient(item));
         },
         collect: monitor => ({
             isHover: monitor.isOver(),
@@ -107,10 +104,7 @@ export const BurgerConstructor = () => {
                         type: CLOSE_ORDER_MODAL
                     })}>
                         {
-                            request && (<Loader />)
-                        }
-                        {
-                            orderNum && (<OrderDetails orderNum={orderNum} />)
+                            request ? (<Loader />) : (<OrderDetails orderNum={orderNum} />)
                         }
                     </Modal>
                 )
