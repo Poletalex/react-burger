@@ -1,0 +1,48 @@
+.main {
+    margin-left: 10%;
+    margin-top: 10%;
+    display: flex;
+    left: 50%;
+    width: 480px;
+}
+
+.main p {
+    height: 64px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buttons {
+    width: max-content;
+    display: flex;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.navLink {
+    composes: nav;
+}
+
+.activeNavLink {
+    composes: nav;
+}
+
+.activeNavLink p {
+    color: white;
+}
+

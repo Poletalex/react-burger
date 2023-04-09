@@ -1,4 +1,4 @@
-import { DATA_SOURCE } from "../../utils/constants";
+import { customFetch } from "../../utils/utils";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -10,17 +10,12 @@ export const getIngredients = () => dispatch => {
     });
     (async () => {
         try {
-            const res = await fetch(DATA_SOURCE + 'ingredients');
-            if (res.ok) {
-                const { data } = await res.json();
-                dispatch({
-                    type: GET_INGREDIENTS_SUCCESS,
-                    ingredients: data
-                });
-            } else {
-                throw new Error(`Ошибка ${res.status}`)
-            }
-        } catch (err) {
+            const res = await customFetch('ingredients');
+            dispatch({
+                type: GET_INGREDIENTS_SUCCESS,
+                ingredients: res.data
+            });
+        } catch {
             dispatch({
                 type: GET_INGREDIENTS_FAILED
             });

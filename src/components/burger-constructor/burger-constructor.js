@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_INGREDIENT } from '../../services/actions/burger-constructor';
+import { addIngredient } from '../../services/actions/burger-constructor';
 import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
 import { BUN } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
+import { Loader } from '../loader/loader';
 
 export const BurgerConstructor = () => {
     const { bun, notBun } = useSelector(store => store.burgerConstructor);
@@ -19,20 +21,24 @@ export const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
 
-    const { orderNum } = useSelector(store => store.order);
+    const { orderNum, request } = useSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
         drop(item) {
-            dispatch({
-                type: ADD_INGREDIENT,
-                ingredient: item.ingredient
-            });
+            dispatch(addIngredient(item));
         },
         collect: monitor => ({
             isHover: monitor.isOver(),
         })
     });
+
+    const { user } = useSelector(store => store.user);
+    const navigate = useNavigate();
+    
+    const createOrderHandler = useCallback(() => {
+        user ? dispatch(createOrder(fullData)) : navigate('/login');
+    }, [user, dispatch, fullData, navigate]);
 
     return (
         <div
@@ -55,7 +61,7 @@ export const BurgerConstructor = () => {
                 {
                     notBun.map((nextIngredient, index) => (
                         <DraggableIngredient
-                            key={nextIngredient._id + Math.random()}
+                            key={nextIngredient.uniqueId}
                             index={index}
                             data={nextIngredient}
                         />))
@@ -80,22 +86,26 @@ export const BurgerConstructor = () => {
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button
-                    htmlType="button"
-                    type="primary"
-                    size="medium"
-                    onClick={() => {
-                        dispatch(createOrder(fullData));
-                    }}>
-                    Оформить заказ
-                </Button>
+                {
+                    bun ?
+                        (<Button
+                            htmlType="button"
+                            type="primary"
+                            size="medium"
+                            onClick={createOrderHandler}>
+                            Оформить заказ
+                        </Button>) :
+                        (<p className="text text_type_main-medium">Не хватает булок для заказа</p>)
+                }
             </footer>
             {
-                orderNum && (
+                (request || orderNum) && (
                     <Modal onClose={() => dispatch({
                         type: CLOSE_ORDER_MODAL
                     })}>
-                        <OrderDetails orderNum={orderNum} />
+                        {
+                            request ? (<Loader />) : (<OrderDetails orderNum={orderNum} />)
+                        }
                     </Modal>
                 )
             }

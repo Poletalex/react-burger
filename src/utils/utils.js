@@ -1,4 +1,4 @@
-import { BUN, MAIN, SAUCE } from "./constants";
+import { BUN, BURGER_API, MAIN, SAUCE } from "./constants";
 
 export const getFilteredData = arr => {
     let hasBun = false;
@@ -47,4 +47,49 @@ export const getСategorizedData = data => {
     }
 
     return categorizedData;
+};
+
+export const customFetch = async (endpoint, options) => {
+    const res = await fetch(`${BURGER_API}${endpoint}`, options);
+    if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+            return data;
+        } else {
+            throw new Error(`Ответ не success: ${data}`);
+        }
+    } else {
+        throw new Error(`Ошибка ${res.status}`)
+    }
+};
+
+export const tokenRefresh = async () => {
+    const res = await customFetch('auth/token', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("refreshToken"),
+        }),
+    });
+    return res;
+};
+
+export const fetchWithRefresh = async (url, options) => {
+    try {
+        const res = await customFetch(url, options);
+        return res;
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            const { accessToken, refreshToken } = await tokenRefresh();
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("accessToken", accessToken);
+            options.headers.authorization = accessToken;
+            const res = await customFetch(url, options);
+            return res;
+        } else {
+            throw err;
+        }
+    }
 };
