@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const components = {
     burger: BurgerIcon,
-    list: ListIcon,
+    feed: ListIcon,
     profile: ProfileIcon
 };
 
