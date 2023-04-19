@@ -1,27 +1,33 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, FC } from 'react';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../modals/order-details/order-details';
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient } from '../../services/actions/burger-constructor';
 import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
-import { BUN } from '../../utils/constants';
+import { Category } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../loader/loader';
+import { TIngredient } from '../../utils/types';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-export const BurgerConstructor = () => {
-    const { bun, notBun } = useSelector(store => store.burgerConstructor);
-    const fullData = useMemo(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
+type TData = {
+    bun: TIngredient,
+    notBun: TIngredient[]
+};
+
+export const BurgerConstructor: FC = () => {
+    const { bun, notBun } = useAppSelector<TData>(store => store.burgerConstructor);
+    const fullData = useMemo<Array<TIngredient>>(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
 
     const totalPrice = useMemo(() => fullData.reduce((sum, nextItem) =>
-        sum + (nextItem.type === BUN ? nextItem.price * 2 : nextItem.price), 0), [fullData]);
+        sum + (nextItem.type === Category.BUN ? nextItem.price * 2 : nextItem.price), 0), [fullData]);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { orderNum, request } = useSelector(store => store.order);
+    const { orderNum, request } = useAppSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
@@ -33,7 +39,7 @@ export const BurgerConstructor = () => {
         })
     });
 
-    const { user } = useSelector(store => store.user);
+    const { user } = useAppSelector(store => store.user);
     const navigate = useNavigate();
     
     const createOrderHandler = useCallback(() => {

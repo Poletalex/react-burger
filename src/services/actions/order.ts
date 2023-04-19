@@ -1,3 +1,5 @@
+import { Dispatch } from "redux";
+import { TIngredient } from "../../utils/types";
 import { customFetch } from "../../utils/utils";
 import { CLEAR_INGREDIENTS } from "./burger-constructor";
 
@@ -7,7 +9,7 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
 export const CLOSE_ORDER_MODAL = 'CLOSE_ORDER_MODAL';
 
-export const createOrder = data => dispatch => {
+export const createOrder = (data: Array<TIngredient>)  => (dispatch: Dispatch) => {
     dispatch({
         type: GET_ORDER_REQUEST
     });

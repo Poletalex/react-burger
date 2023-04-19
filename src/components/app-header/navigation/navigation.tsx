@@ -1,8 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 import styles from './navigation.module.css';
-import PropTypes from 'prop-types';
+
+type TNavigation = {
+    to: string;
+    title: string;
+    icon: 'burger' | 'list' | 'profile'
+};
 
 const components = {
     burger: BurgerIcon,
@@ -10,7 +15,7 @@ const components = {
     profile: ProfileIcon
 };
 
-export const Navigation = ({ to, title, icon }) => {
+export const Navigation: FC<TNavigation> = ({ to, title, icon }) => {
     const Icon = components[icon];
 
     return (
@@ -24,11 +29,5 @@ export const Navigation = ({ to, title, icon }) => {
             </p>
         </NavLink>
     );
-};
-
-Navigation.propTypes = {
-    to: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired
 };
 

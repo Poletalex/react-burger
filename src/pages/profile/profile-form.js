@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { ProfileNavigation } from "./profile-navigation";
-import { patchUser } from "../../services/action";
+import { patchUser } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
 export const ProfileForm = () => {

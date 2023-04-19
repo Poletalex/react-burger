@@ -3,7 +3,7 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { register } from "../services/action";
+import { register } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
 
 export const RegisterPage = () => {

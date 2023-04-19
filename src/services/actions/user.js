@@ -1,5 +1,5 @@
-import { customFetch } from "../utils/utils";
-import { setAuthChecked, setUser } from "./user";
+import { customFetch } from "../../utils/utils";
+import { setAuthChecked, setUser } from "../slices/user";
 
 export const checkUserAuth = () => dispatch => {
     if (localStorage.getItem('accessToken')) {

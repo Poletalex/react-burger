@@ -1,19 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import './index.css';
-import { rootReducer } from './services/reducers';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router} from 'react-router-dom';
-
-const store = configureStore({
-  reducer: rootReducer
-});
+import { store } from './store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
 );
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>

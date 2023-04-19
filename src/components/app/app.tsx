@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppHeader } from '../app-header/app-header';
 import styles from './app.module.css';
-import { useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { HomePage } from '../../pages/home';
@@ -17,9 +16,10 @@ import { ProfileForm } from '../../pages/profile/profile-form';
 import { OrdersHistory } from '../../pages/profile/orders-history';
 import { Logout } from '../../pages/logout';
 import { Modal } from '../modals/modal/modal';
+import { useAppDispatch } from '../../store/hooks';
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;

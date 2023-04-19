@@ -1,6 +1,7 @@
-import { BUN, BURGER_API, MAIN, SAUCE } from "./constants";
+import { BURGER_API, Category } from "./constants";
+import { TIngredient } from "./types";
 
-export const getFilteredData = arr => {
+export const getFilteredData = (arr: TIngredient[]) => {
     let hasBun = false;
     return arr.filter(nextIngredient => {
         if (nextIngredient.type === 'bun') {
@@ -16,26 +17,32 @@ export const getFilteredData = arr => {
     });
 };
 
+type TCategory = {
+    type: Category;
+    title: string;
+    data: TIngredient[]
+};
+
 export const categories = [
     {
-        type: BUN,
+        type: Category.BUN,
         title: 'Булки',
         data: []
     },
     {
-        type: SAUCE,
+        type: Category.SAUCE,
         title: 'Соусы',
         data: []
     },
     {
-        type: MAIN,
+        type: Category.MAIN,
         title: 'Начинки',
         data: []
     }
 ];
 
-export const getСategorizedData = data => {
-    const categorizedData = JSON.parse(JSON.stringify(categories));
+export const getСategorizedData = (data: Array<TIngredient>) => {
+    const categorizedData: TCategory[] = JSON.parse(JSON.stringify(categories));
 
     if (data) {
         data.forEach(nextIngredient => {
@@ -49,7 +56,7 @@ export const getСategorizedData = data => {
     return categorizedData;
 };
 
-export const customFetch = async (endpoint, options) => {
+export const customFetch = async (endpoint: string, options: any) => {
     const res = await fetch(`${BURGER_API}${endpoint}`, options);
     if (res.ok) {
         const data = await res.json();
@@ -76,11 +83,11 @@ export const tokenRefresh = async () => {
     return res;
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any ) => {
     try {
         const res = await customFetch(url, options);
         return res;
-    } catch (err) {
+    } catch (err: any) {
         if (err.message === "jwt expired") {
             const { accessToken, refreshToken } = await tokenRefresh();
             localStorage.setItem("refreshToken", refreshToken);

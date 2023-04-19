@@ -1,4 +1,4 @@
-import { BUN } from "../../utils/constants";
+import { Category } from "../../utils/constants";
 import {
     ADD_INGREDIENT,
     CLEAR_INGREDIENTS,
@@ -14,7 +14,7 @@ const initialState = {
 export const constructorReducer = (state = initialState, action) => {
     switch (action.type) { 
         case ADD_INGREDIENT: { 
-            return action.ingredient.type === BUN ?
+            return action.ingredient.type === Category.BUN ?
                 {
                     ...state,
                     bun: action.ingredient

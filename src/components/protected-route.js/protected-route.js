@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from "react-router-dom";
-import { checkUserAuth } from '../../services/action';
+import { checkUserAuth } from '../../services/actions/user';
 import PropTypes from 'prop-types';
 
 export const ProtectedRouteElement = ({ withAuth = true, element }) => {

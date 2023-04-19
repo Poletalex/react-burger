@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { logout } from "../services/action";
+import { logout } from "../services/actions/user";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
