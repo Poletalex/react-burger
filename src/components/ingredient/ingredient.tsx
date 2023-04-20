@@ -1,22 +1,26 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { dataType } from '../../utils/dataType';
 import styles from './ingredient.module.css';
 import { useDrag } from 'react-dnd/dist/hooks';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Link, useLocation } from 'react-router-dom';
+import { TConstructorState, TIngredient } from '../../utils/types';
 
 const makeSelectCount = () =>
     createSelector(
-        store => store.burgerConstructor,
-        (_, data) => data,
-        ({ bun, notBun }, data) => [...notBun, bun]
+        (store: any) => store.burgerConstructor,
+        (_: any, data: TIngredient): TIngredient => data,
+        ({ bun, notBun }: TConstructorState, data: TIngredient): number => [...notBun, bun]
             .filter(nextIngredient => nextIngredient && nextIngredient._id === data._id).length
     );
 
-export const Ingredient = ({ data, onClick }) => {
+type TIngredientCard = {
+    data: TIngredient,
+    onClick: () => void
+};
+
+export const Ingredient: FC<TIngredientCard> = ({ data, onClick }) => {
     const location = useLocation();
     const [, dragRef] = useDrag({
         type: 'ingredient',
@@ -57,9 +61,4 @@ export const Ingredient = ({ data, onClick }) => {
             </div>
         </Link>        
     );
-};
-
-Ingredient.propTypes = {
-    data: dataType,
-    onClick: PropTypes.func.isRequired
 };

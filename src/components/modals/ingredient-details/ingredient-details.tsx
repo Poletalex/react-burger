@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../../store/hooks';
+import { TIngredientState } from '../../../utils/types';
 
 export const IngredientDetails = () => {
-    const { ingredient } = useSelector(store => store.modal);
-    const { ingredients } = useSelector(store => store.ingredients);
+    const { ingredient } = useAppSelector(store => store.modal);
+    const { ingredients } = useAppSelector<TIngredientState>(store => store.ingredients);
     const { ingredientId } = useParams(); 
     const currentIngredient = ingredient || ingredients?.find(nextIngredient => nextIngredient._id === ingredientId);
 

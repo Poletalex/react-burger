@@ -9,7 +9,7 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
 export const CLOSE_ORDER_MODAL = 'CLOSE_ORDER_MODAL';
 
-export const createOrder = (data: Array<TIngredient>)  => (dispatch: Dispatch) => {
+export const createOrder = (data: Array<TIngredient | null>)  => (dispatch: Dispatch) => {
     dispatch({
         type: GET_ORDER_REQUEST
     });
@@ -22,7 +22,7 @@ export const createOrder = (data: Array<TIngredient>)  => (dispatch: Dispatch) =
                         'Content-Type': 'application/json; charset=utf-8'
                     },
                     body: JSON.stringify({
-                        "ingredients": data.map(nextIngredient => nextIngredient._id)
+                        "ingredients": data.map(nextIngredient => nextIngredient?._id)
                     })
                 });
                 dispatch({

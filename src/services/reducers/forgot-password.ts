@@ -1,9 +1,9 @@
 import {
-    RESET_PASSWORD_CLOSE,
-    RESET_PASSWORD_FAILED,
-    RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS
-} from "../actions/reset-password";
+    FORGOT_PASSWORD_CLOSE,
+    FORGOT_PASSWORD_FAILED,
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_SUCCESS
+} from "../actions/forgot-password";
 
 const initialState = {
     request: false,
@@ -11,9 +11,9 @@ const initialState = {
     failed: false
 };
 
-export const resetPasswordReducer = (state = initialState, action) => {
+export const forgotPasswordReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case RESET_PASSWORD_REQUEST: {
+        case FORGOT_PASSWORD_REQUEST: {
             return {
                 ...state,
                 request: true,
@@ -21,21 +21,21 @@ export const resetPasswordReducer = (state = initialState, action) => {
                 failed: false,
             };
         }
-        case RESET_PASSWORD_SUCCESS: {
+        case FORGOT_PASSWORD_SUCCESS: {
             return {
                 ...state,
                 success: true,
                 request: false
             };
         }
-        case RESET_PASSWORD_FAILED: {
+        case FORGOT_PASSWORD_FAILED: {
             return {
                 ...state,
                 failed: true,
                 request: false
             };
         }
-        case RESET_PASSWORD_CLOSE: {
+        case FORGOT_PASSWORD_CLOSE: { 
             return {
                 ...state,
                 success: false

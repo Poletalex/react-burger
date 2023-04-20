@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { logout } from "../services/actions/user";
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
 
 export const Logout = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {

@@ -1,38 +1,43 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, SyntheticEvent } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import styles from './burger-ingredients.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { CLOSE_INGREDIENT_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
 import { categories, getСategorizedData } from '../../utils/utils';
+import { useAppSelector } from '../../store/hooks';
 
 export const BurgerIngredients = () => {
     const [activeTab, setTab] = useState(categories[0].title);
     const [showModal, setShow] = useState(false);
 
-    const { ingredients } = useSelector(store => store.ingredients);
+    const { ingredients } = useAppSelector(store => store.ingredients);
 
     const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
     const dispatch = useDispatch();
 
-    const categoriesRef = useRef();
+    const categoriesRef = useRef<any>();
 
-    const handleScroll = event => {
-        const parentTop = categoriesRef.current.getBoundingClientRect().top;
-        const startDiff = Math.abs(event.currentTarget.children[0].getBoundingClientRect().top - parentTop);
+    const handleScroll = (event: SyntheticEvent) => {
+        if (categoriesRef.current) { 
+            const parentTop = categoriesRef.current.getBoundingClientRect().top;
+            if (event.currentTarget) { 
+                const startDiff = Math.abs(event.currentTarget.children[0].getBoundingClientRect().top - parentTop);
 
-        const { index } = Array.from(event.currentTarget.children).reduce((prev, curr, index) => {
-            const diff = Math.abs(parentTop - curr.getBoundingClientRect().top);
-            return diff < prev.diff ? { diff, index } : prev;
-        }, { diff: startDiff, index: 0 });
+                const { index } = Array.from(event.currentTarget.children).reduce((prev, curr, index) => {
+                    const diff = Math.abs(parentTop - curr.getBoundingClientRect().top);
+                    return diff < prev.diff ? { diff, index } : prev;
+                }, { diff: startDiff, index: 0 });
 
-        setTab(data[index].title);
+                setTab(data[index].title);
+            }            
+        }        
     };
 
     // навигация по нажатию табов
-    const tabsRef = useRef([]);
+    const tabsRef = useRef<any>([]);
     useEffect(() => {
         tabsRef.current[categories.findIndex(nextTab => nextTab.title === activeTab)]
             .scrollIntoView();

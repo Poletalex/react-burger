@@ -5,7 +5,7 @@ export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 export const SORT_INGREDIENTS = 'SORT_INGREDIENTS';
 export const CLEAR_INGREDIENTS = 'CLEAR_INGREDIENTS';
 
-export const addIngredient = item => ({
+export const addIngredient = (item: any) => ({
     type: ADD_INGREDIENT,
     ingredient: {
         ...item.ingredient,

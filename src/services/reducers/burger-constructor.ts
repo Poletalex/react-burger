@@ -1,4 +1,5 @@
 import { Category } from "../../utils/constants";
+import { TConstructorState } from "../../utils/types";
 import {
     ADD_INGREDIENT,
     CLEAR_INGREDIENTS,
@@ -6,12 +7,12 @@ import {
     SORT_INGREDIENTS
 } from "../actions/burger-constructor";
 
-const initialState = {
+const initialState: TConstructorState = {
     bun: null,
     notBun: []
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: any) => {
     switch (action.type) { 
         case ADD_INGREDIENT: { 
             return action.ingredient.type === Category.BUN ?

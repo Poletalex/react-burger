@@ -7,7 +7,7 @@ const initialState = {
     ingredient: null
 };
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: any) => {
     switch (action.type) { 
         case SELECT_INGREDIENT: { 
             return { ingredient: action.ingredient };

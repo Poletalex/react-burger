@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FC, ReactElement, useEffect } from 'react';
 import { Navigate, useLocation } from "react-router-dom";
 import { checkUserAuth } from '../../services/actions/user';
-import PropTypes from 'prop-types';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-export const ProtectedRouteElement = ({ withAuth = true, element }) => {
-    const { user, isAuthChecked } = useSelector(store => store.user);
-    const dispatch = useDispatch();
+type TProtected = {
+    withAuth?: boolean;
+    element: ReactElement;
+};
+
+export const ProtectedRouteElement: FC<TProtected> = ({ withAuth = true, element }) => {
+    const { user, isAuthChecked } = useAppSelector(store => store.user);
+    const dispatch = useAppDispatch();
     const location = useLocation();
 
     useEffect(() => {
@@ -31,9 +35,4 @@ export const ProtectedRouteElement = ({ withAuth = true, element }) => {
 }; 
 
 export const WithAuth = ProtectedRouteElement;
-export const WithoutAuth = props => <ProtectedRouteElement withAuth={false} {...props} />
-
-ProtectedRouteElement.propTypes = {
-    withAuth: PropTypes.bool,
-    element: PropTypes.element.isRequired
-};
+export const WithoutAuth = (props: any) => <ProtectedRouteElement withAuth={false} {...props} />

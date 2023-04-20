@@ -1,7 +1,9 @@
 import { customFetch } from "../../utils/utils";
 import { setAuthChecked, setUser } from "../slices/user";
+import { TForm, TUser } from "../../utils/types";
+import { AppDispatch } from "../../store/store";
 
-export const checkUserAuth = () => dispatch => {
+export const checkUserAuth = () => (dispatch: AppDispatch) => {
     if (localStorage.getItem('accessToken')) {
         try {
             dispatch(getUser());
@@ -17,7 +19,7 @@ export const checkUserAuth = () => dispatch => {
     }
 };
 
-export const getUser = () => dispatch => {
+export const getUser = () => (dispatch: AppDispatch) => {
     (async () => {
         try {
             const res = await customFetch('auth/user', {
@@ -36,7 +38,7 @@ export const getUser = () => dispatch => {
     })();
 };
 
-export const patchUser = body => dispatch => {
+export const patchUser = (body: any) => (dispatch: AppDispatch) => {
     (async () => {
         try {
             const res = await customFetch('auth/user', {
@@ -52,7 +54,7 @@ export const patchUser = body => dispatch => {
     })();
 };
 
-export const register = ({ name, email, password }) => dispatch => {
+export const register = ({ name, email, password }: TUser) => (dispatch: AppDispatch) => {
     if (name && email && password) {
         (async () => {
             try {
@@ -74,7 +76,7 @@ export const register = ({ name, email, password }) => dispatch => {
     }
 };
 
-export const login = ({ email, password }) => dispatch => {
+export const login = ({ email, password }: TForm) => (dispatch: AppDispatch) => {
     if (email && password) {
         (async () => {
             try {
@@ -96,7 +98,7 @@ export const login = ({ email, password }) => dispatch => {
     }
 };
 
-export const logout = () => dispatch => {
+export const logout = () => (dispatch: AppDispatch) => {
     (async () => {
         try {
             await customFetch('auth/logout', {

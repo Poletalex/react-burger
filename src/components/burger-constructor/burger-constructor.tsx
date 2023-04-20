@@ -10,20 +10,15 @@ import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient
 import { Category } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../loader/loader';
-import { TIngredient } from '../../utils/types';
+import { TConstructorState } from '../../utils/types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-type TData = {
-    bun: TIngredient,
-    notBun: TIngredient[]
-};
-
 export const BurgerConstructor: FC = () => {
-    const { bun, notBun } = useAppSelector<TData>(store => store.burgerConstructor);
-    const fullData = useMemo<Array<TIngredient>>(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
+    const { bun, notBun } = useAppSelector<TConstructorState>(store => store.burgerConstructor);
+    const fullData = useMemo(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
 
-    const totalPrice = useMemo(() => fullData.reduce((sum, nextItem) =>
-        sum + (nextItem.type === Category.BUN ? nextItem.price * 2 : nextItem.price), 0), [fullData]);
+    const totalPrice = useMemo(() => fullData.reduce((sum, nextItem) => nextItem ?
+        sum + (nextItem.type === Category.BUN ? nextItem.price * 2 : nextItem.price) : sum, 0), [fullData]);
 
     const dispatch = useAppDispatch();
 

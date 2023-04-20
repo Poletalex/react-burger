@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import doneIcon from '../../../images/done.svg';
 import styles from './order-details.module.css';
-import PropTypes from 'prop-types';
 
-export const OrderDetails = ({ orderNum }) => {
+type TOrder = {
+    orderNum: number;
+};
+
+export const OrderDetails: FC<TOrder> = ({ orderNum }) => {
 
     return (
         <div className={styles.content}>
@@ -25,8 +28,4 @@ export const OrderDetails = ({ orderNum }) => {
             </p>
         </div>
     );
-};
-
-OrderDetails.propTypes = {
-    orderNum: PropTypes.number.isRequired
 };

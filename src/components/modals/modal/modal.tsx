@@ -1,14 +1,19 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, ReactNode, FC } from 'react';
 import ReactDOM from 'react-dom';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import styles from './modal.module.css';
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot: any = document.getElementById("react-modals");
 
-export const Modal = ({ children, header, onClose }) => {
-    const escapeClose = useCallback(event => {
+type TModal = {
+    children: ReactNode;
+    header?: string;
+    onClose: () => any;
+};
+
+export const Modal:FC<TModal> = ({ children, header, onClose }) => {
+    const escapeClose = useCallback((event: any) => {
         if (event.key === "Escape") {
             onClose();
         }
@@ -42,9 +47,3 @@ export const Modal = ({ children, header, onClose }) => {
         modalRoot
     );
 }; 
-
-Modal.propTypes = {
-    children: PropTypes.element.isRequired,
-    header: PropTypes.string,
-    onClose: PropTypes.func.isRequired
-};

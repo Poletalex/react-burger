@@ -15,3 +15,31 @@ export type TIngredient = {
     __v: number;
     uniqueId?: string;
 };
+
+export type TIngredientState = {
+    ingredients: TIngredient[] | null;
+    request: boolean;
+    failed: boolean;
+};
+
+export type TConstructorState = {
+    bun: TIngredient | null,
+    notBun: TIngredient[]
+};
+
+export type TUser = {
+    name: string;
+    email: string;
+    password?: string;
+};
+
+export type TUserState = {
+    user: TUser | null;
+    isAuthChecked: Boolean;
+};
+
+export type TForm = {
+    name?: string;
+    email?: string;
+    password?: string;
+};

@@ -1,58 +1,66 @@
-import React, { useEffect } from "react";
-import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './login.module.css';
+import React from "react";
+import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
-import { forgotPassword, FORGOT_PASSWORD_CLOSE } from "../services/actions/forgot-password";
-import { useDispatch, useSelector } from "react-redux";
+import { register } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch } from "../store/hooks";
 
-export const ForgotPage = () => {
+export const RegisterPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { success } = useSelector(store => store.forgotPassword);
+    const { form, onChange } = useForm({
+        name: '',
+        email: '',
+        password: ''
+    });
 
-    const { form, onChange } = useForm({ email: '' });
-
-    const handleSubmit = event => {
+    const handleSubmit = (event: any) => {
         event.preventDefault();
-        dispatch(forgotPassword(form));
+        dispatch(register(form));
     };
-
-    useEffect(() => {
-        if (success) {
-            dispatch({
-                type: FORGOT_PASSWORD_CLOSE
-            });
-            navigate('/reset-password', { state: { prev: '/forgot-password', replace: true } });
-        }
-    }, [success, dispatch, navigate]);
 
     return (
         <form
             onSubmit={handleSubmit}
             className={styles.main}>
             <p className="text text_type_main-medium mb-6">
-                Восстановление пароля
+                Регистрация
             </p>
+            <Input
+                type={'text'}
+                placeholder={'Имя'}
+                onChange={onChange}
+                value={form.name}
+                name={'name'}
+                error={false}
+                size={'default'}
+                extraClass="mb-6"
+            />
             <EmailInput
                 extraClass="mb-6"
-                placeholder={'Укажите e-mail'}
                 onChange={onChange}
                 value={form.email}
                 name={'email'}
                 isIcon={false}
+            />
+            <PasswordInput
+                onChange={onChange}
+                value={form.password}
+                name={'password'}
+                extraClass="mb-6"
             />
             <Button
                 htmlType="submit"
                 type="primary"
                 size="medium"
                 extraClass="mb-20">
-                Восстановить
+                Зарегистрироваться
             </Button>
             <div className={styles.footer}>
                 <p className="text text_type_main-default text_color_inactive mr-2">
-                    Вспомнили пароль?
+                    Уже зарегистрированы?
                 </p>
                 <Button
                     htmlType="button"

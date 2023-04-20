@@ -2,13 +2,13 @@ import React from "react";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { resetPassword } from "../services/actions/reset-password";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch } from "../store/hooks";
 
 export const ResetPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
 
     const { form, onChange } = useForm({
@@ -16,7 +16,7 @@ export const ResetPage = () => {
         token: ''
     });
 
-    const handleSubmit = event => {
+    const handleSubmit = (event: any) => {
         event.preventDefault();
         dispatch(resetPassword(form));
     };

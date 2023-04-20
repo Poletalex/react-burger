@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { TUserState } from "../../utils/types";
 
-const initialState = {
+const initialState: TUserState = {
     user: null,
     isAuthChecked: false,
 };

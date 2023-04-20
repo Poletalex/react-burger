@@ -1,24 +1,25 @@
 import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { ProfileNavigation } from "./profile-navigation";
 import { patchUser } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { TUserState } from "../../utils/types";
 
 export const ProfileForm = () => {
-    const { user } = useSelector(store => store.user);
-    const dispatch = useDispatch();
+    const { user } = useAppSelector<TUserState>(store => store.user);
+    const dispatch = useAppDispatch();
 
     const initValue = {
-        name: user.name,
-        email: user.email,
+        name: user?.name,
+        email: user?.email,
         password: ''
     };
 
     const { form, setForm, onChange } = useForm(initValue);
 
-    const save = event => {
+    const save = (event: any) => {
         event.preventDefault();
         dispatch(patchUser(form));
     };
@@ -27,10 +28,10 @@ export const ProfileForm = () => {
         setForm(initValue);
     };
 
-    const isChanged = useCallback(() =>
-        user.name !== form.name ||
+    const isChanged = useCallback(() => user && 
+        (user.name !== form.name ||
         user.email !== form.email ||
-        !!form.password, [user, form]);
+        !!form.password), [user, form]);
 
     return (
         <div className={styles.main}>
