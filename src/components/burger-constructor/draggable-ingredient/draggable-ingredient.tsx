@@ -1,10 +1,10 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
 import { REMOVE_INGREDIENT, SORT_INGREDIENTS } from "../../../services/actions/burger-constructor";
 import styles from './draggable-ingredient.module.css';
 import { TIngredient } from "../../../utils/types";
 import { FC } from "react";
+import { useAppDispatch } from "../../../store/hooks";
 
 type TDraggable = {
     data: TIngredient;
@@ -17,7 +17,7 @@ type TDragItem = {
 };
 
 export const DraggableIngredient: FC<TDraggable> = ({ data, index }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [{ isDrag }, dragRef] = useDrag({
         type: 'element',

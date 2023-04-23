@@ -1,14 +1,13 @@
-import React, { useCallback } from "react";
+import React, { FormEvent, useCallback } from "react";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { ProfileNavigation } from "./profile-navigation";
 import { patchUser } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { TUserState } from "../../utils/types";
 
 export const ProfileForm = () => {
-    const { user } = useAppSelector<TUserState>(store => store.user);
+    const { user } = useAppSelector(store => store.user);
     const dispatch = useAppDispatch();
 
     const initValue = {
@@ -19,7 +18,7 @@ export const ProfileForm = () => {
 
     const { form, setForm, onChange } = useForm(initValue);
 
-    const save = (event: any) => {
+    const save = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(patchUser(form));
     };

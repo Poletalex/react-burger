@@ -13,7 +13,7 @@ type TModal = {
 };
 
 export const Modal:FC<TModal> = ({ children, header, onClose }) => {
-    const escapeClose = useCallback((event: any) => {
+    const escapeClose = useCallback((event: KeyboardEvent) => {
         if (event.key === "Escape") {
             onClose();
         }

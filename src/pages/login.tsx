@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(login(form));
     };

@@ -4,10 +4,9 @@ import { Ingredient } from '../ingredient/ingredient';
 import { Modal } from '../modals/modal/modal';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import styles from './burger-ingredients.module.css';
-import { useDispatch } from 'react-redux';
 import { CLOSE_INGREDIENT_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
 import { categories, getСategorizedData } from '../../utils/utils';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const BurgerIngredients = () => {
     const [activeTab, setTab] = useState(categories[0].title);
@@ -16,7 +15,7 @@ export const BurgerIngredients = () => {
     const { ingredients } = useAppSelector(store => store.ingredients);
 
     const data = useMemo(() => getСategorizedData(ingredients), [ingredients]);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const categoriesRef = useRef<any>();
 

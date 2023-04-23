@@ -2,10 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient.module.css';
 import { useDrag } from 'react-dnd/dist/hooks';
-import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Link, useLocation } from 'react-router-dom';
 import { TConstructorState, TIngredient } from '../../utils/types';
+import { useAppSelector } from '../../store/hooks';
 
 const makeSelectCount = () =>
     createSelector(
@@ -31,7 +31,7 @@ export const Ingredient: FC<TIngredientCard> = ({ data, onClick }) => {
     });
 
     const selectCount = useMemo(makeSelectCount, []);
-    const count = useSelector(store => selectCount(store, data));
+    const count = useAppSelector(store => selectCount(store, data));
 
     return (
         <Link

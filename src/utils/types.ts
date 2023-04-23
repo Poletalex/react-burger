@@ -43,3 +43,8 @@ export type TForm = {
     email?: string;
     password?: string;
 };
+
+export type TDragged = {
+    id: number,
+    ingredient: TIngredient
+};

@@ -5,10 +5,9 @@ import { BurgerConstructor } from '../components/burger-constructor/burger-const
 import { BurgerIngredients } from '../components/burger-ingredients/burger-ingredients';
 import styles from './home.module.css';
 import { useAppSelector } from '../store/hooks';
-import { TIngredientState } from '../utils/types';
 
 export const HomePage = () => {
-    const { ingredients } = useAppSelector<TIngredientState>(store => store.ingredients);
+    const { ingredients } = useAppSelector(store => store.ingredients);
 
     return (
         <main className={styles.main}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ export const RegisterPage = () => {
         password: ''
     });
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(register(form));
     };

@@ -56,7 +56,7 @@ export const getСategorizedData = (data: Array<TIngredient>) => {
     return categorizedData;
 };
 
-export const customFetch = async (endpoint: string, options?: any) => {
+export const customFetch = async (endpoint: string, options?: RequestInit) => {
     const res = await fetch(`${BURGER_API}${endpoint}`, options);
     if (res.ok) {
         const data = await res.json();

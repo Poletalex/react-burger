@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ export const ForgotPage = () => {
 
     const { form, onChange } = useForm({ email: '' });
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(forgotPassword(form));
     };

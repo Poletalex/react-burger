@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './login.module.css';
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ export const ResetPage = () => {
         token: ''
     });
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(resetPassword(form));
     };
