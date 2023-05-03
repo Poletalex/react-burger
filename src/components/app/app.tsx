@@ -17,6 +17,8 @@ import { OrdersHistory } from '../../pages/profile/orders-history';
 import { Logout } from '../../pages/logout';
 import { Modal } from '../modals/modal/modal';
 import { useAppDispatch } from '../../store/hooks';
+import { Feed } from '../../pages/feed/feed';
+import { OrderPage } from '../order/order-page/order-page';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +45,8 @@ const App = () => {
         <Route path="/profile/orders/:id" element={<WithAuth element={<ProfileNavigation />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />
         <Route path="/logout" element={<WithAuth element={< Logout />} />} />
+        <Route path="/feed" element={< Feed />} />
+        <Route path="/feed/:id" element={< OrderPage />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
       {
@@ -64,3 +68,4 @@ const App = () => {
     </div>
   );
 }
+export default App;

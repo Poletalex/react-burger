@@ -6,7 +6,7 @@ import styles from './navigation.module.css';
 type TNavigation = {
     to: string;
     title: string;
-    icon: 'burger' | 'list' | 'profile'
+    icon: 'burger' | 'feed' | 'profile'
 };
 
 const components = {

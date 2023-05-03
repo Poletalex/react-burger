@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './order-card.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { MAX_ORDER_INGREDIENTS } from '../../../utils/constants';
 import { Link } from 'react-router-dom';
+import { TOrder } from '../../../utils/types';
 
-export const OrderCard = ({ id, time, name, ingredients, price }) => {
+export const OrderCard:FC<TOrder> = ({ id, time, name, ingredients, price }) => {
 
     const reversedIngredients = useMemo(() => {
         const reversed = [...ingredients];

@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import styles from './order-page.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../store/hooks';
+import { TOrder } from '../../../utils/types';
 
 export const OrderPage = () => {
-    const { ingredients } = useSelector(store => store.ingredients);
+    const { ingredients } = useAppSelector(store => store.ingredients);
 
-    const order = useMemo(() => ingredients && ({
+    const order = useMemo<TOrder>(() => ingredients && ({
         id: '034535',
         status: 'Выполнен',
         time: '2022-10-10T17:33:32.877Z',

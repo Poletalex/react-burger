@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import styles from './feed.module.css';
-import { useSelector } from 'react-redux';
 import { OrderCard } from '../../components/order/order-card.js/order-card';
+import { useAppSelector } from '../../store/hooks';
+import { TOrder } from '../../utils/types';
 
-export const Feed = (props) => {
-    const { ingredients } = useSelector(store => store.ingredients);
+export const Feed = () => {
+    const { ingredients } = useAppSelector(store => store.ingredients);
 
-
-    const ordersList = useMemo(() => ingredients && [
+    const ordersList = useMemo<Array<TOrder>>(() => ingredients && [
         {
             id: '034535',
             time: '2022-10-10T17:33:32.877Z',

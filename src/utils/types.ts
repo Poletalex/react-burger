@@ -45,6 +45,15 @@ export type TForm = {
 };
 
 export type TDragged = {
-    id: number,
-    ingredient: TIngredient
+    id: number;
+    ingredient: TIngredient;
+};
+
+export type TOrder = {
+    id: string;
+    time: string;
+    name: string;
+    ingredients: Array<TIngredient>;
+    price: number;
+    status?: string;
 };
