@@ -1,11 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styles from './feed.module.css';
 import { OrderCard } from '../../components/order/order-card.js/order-card';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { TOrder } from '../../utils/types';
+import { connect } from '../../services/actions/ws-feed';
+import { BURGER_WSS } from '../../utils/constants';
 
 export const Feed = () => {
     const { ingredients } = useAppSelector(store => store.ingredients);
+    const { orders } = useAppSelector(store => store.feed);
+    const dispatch = useAppDispatch();
 
     const ordersList = useMemo<Array<TOrder>>(() => ingredients && [
         {
@@ -23,6 +27,14 @@ export const Feed = () => {
             price: 560
         }
     ], [ingredients]);
+
+    useEffect(() => {
+        dispatch(connect(`${BURGER_WSS}orders/all`));
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        console.log(orders);
+    }, [orders]);
 
     return (
         <>

@@ -6,6 +6,7 @@ import { modalReducer } from './modal';
 import { orderReducer } from './order';
 import { resetPasswordReducer } from './reset-password';
 import { userRedicer } from '../slices/user';
+import { feedReducer } from './ws-feed';
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
     modal: modalReducer,
     forgotPassword: forgotPasswordReducer,
     resetPassword: resetPasswordReducer,
-    user: userRedicer
+    user: userRedicer,
+    feed: feedReducer
 });
