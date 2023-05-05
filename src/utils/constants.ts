@@ -13,4 +13,4 @@ export enum WebsocketStatus {
 export const BURGER_API = 'https://norma.nomoreparties.space/api/';
 export const BURGER_WSS = 'wss://norma.nomoreparties.space/';
 
-export const MAX_ORDER_INGREDIENTS = 3;
+export const MAX_ORDER_INGREDIENTS = 6;

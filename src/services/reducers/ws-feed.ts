@@ -1,18 +1,18 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { WebsocketStatus } from "../../utils/constants";
-import { TOrder } from "../../utils/types";
+import { TWsMessage } from "../../utils/types";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/ws-feed";
 
 export type TWsStore = {
-    status: WebsocketStatus,
-    error: string | null,
-    orders: Array<TOrder>
+    status: WebsocketStatus;
+    error: string;
+    wsMessage: TWsMessage | null;
 }
 
 const initialState: TWsStore = {
     status: WebsocketStatus.OFFLINE,
     error: '',
-    orders: []
+    wsMessage: null
 };
 
 export const feedReducer = createReducer(initialState, (builder) => {
@@ -28,7 +28,7 @@ export const feedReducer = createReducer(initialState, (builder) => {
             state.status = WebsocketStatus.OFFLINE;
         })
         .addCase(wsMessage, (state, action) => {
-            state.orders = action.payload;
+            state.wsMessage = action.payload;
         })
         .addCase(wsError, (state, action) => {
             state.error = action.payload;

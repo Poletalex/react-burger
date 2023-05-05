@@ -62,12 +62,12 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware<{}, RootStat
                     } 
                     dispatch(onClose());
 
-                    /* if (isConnected) {
+                    if (isConnected) {
                         dispatch(wsConnecting());
                         reconnectTimer = window.setTimeout(() => {
                             dispatch(wsConnect(url));
                         }, 3000)
-                    } */
+                    } 
                 };
 
                 if (wsSendMessage?.match(action)) {

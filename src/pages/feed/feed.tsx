@@ -1,32 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styles from './feed.module.css';
 import { OrderCard } from '../../components/order/order-card.js/order-card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { TOrder } from '../../utils/types';
 import { connect } from '../../services/actions/ws-feed';
 import { BURGER_WSS } from '../../utils/constants';
+import { TOrder } from '../../utils/types';
 
 export const Feed = () => {
     const { ingredients } = useAppSelector(store => store.ingredients);
-    const { orders } = useAppSelector(store => store.feed);
+    const { wsMessage } = useAppSelector(store => store.feed);
+    const { orders, total, totalToday } = wsMessage || {};
     const dispatch = useAppDispatch();
-
-    const ordersList = useMemo<Array<TOrder>>(() => ingredients && [
-        {
-            id: '034535',
-            time: '2022-10-10T17:33:32.877Z',
-            name: 'Death Star Starship Main бургер',
-            ingredients: [ingredients[0], ingredients[1], ingredients[2], ingredients[3]],
-            price: 480
-        },
-        {
-            id: '034534',
-            time: '2022-10-10T17:33:32.877Z',
-            name: 'Interstellar бургер',
-            ingredients: [ingredients[2], ingredients[3], ingredients[0]],
-            price: 560
-        }
-    ], [ingredients]);
 
     useEffect(() => {
         dispatch(connect(`${BURGER_WSS}orders/all`));
@@ -36,47 +20,70 @@ export const Feed = () => {
         console.log(orders);
     }, [orders]);
 
-    return (
-        <>
-            
-            <div className={styles.main}>
-                <div className={styles.orders + ' mr-15'}>
-                    <p className={styles.title + " text text_type_main-medium mt-10 mb-5"}>Лента заказов</p>
+    // колбэк получения номеров заказов с определенным статусом
+    const getOrdersWithStatus = useCallback((status: string) => {
+        const limit = 10;
+        let stack: TOrder[] = [];
+        return orders
+            ?.reduce((arr: TOrder[][], nextOrder) => {
+                if (nextOrder.status === status) {
+                    stack.push(nextOrder);
+                    // записываем колонку номеров в общий массив
+                    if (stack.length === limit) {
+                        arr.push(stack);
+                        stack = [];
+                    }
+                }
+                return arr;
+            }, [])
+            // отрисовка колонок номеров
+            .map((nextColumn, index) => (
+                <div
+                    key={index}
+                    className={styles.numbersColumn}>
                     {
-                        ingredients && ordersList.map(nextOrder => (
-                            <OrderCard
-                                key={nextOrder.id}
-                                {...nextOrder} />
+                        nextColumn.map(nextOrder => (
+                            <p
+                                key={nextOrder._id}
+                                className="text text_type_digits-default">
+                                {nextOrder.number}
+                            </p>
                         ))
                     }
                 </div>
-                <div className={styles.queue}>
+            ));
+    }, [orders]);
+
+    return (
+        <>
+            <div className={styles.main}>
+                <div className={styles.orders}>
+                    <p className="text text_type_main-medium mt-10 mb-5">Лента заказов</p>
+                    <div className={styles.ordersBoard + ' pr-2'}>
+                        {
+                            ingredients && orders?.map(nextOrder => (
+                                <OrderCard
+                                    key={nextOrder._id}
+                                    {...nextOrder} />
+                            ))
+                        }
+                    </div>
+                </div>
+                <div className={styles.queue + ' pl-15'}>
                     <div className={styles.numbers + ' mb-15'}>
-                        <div className={styles.column + ' mr-9'}>
+                        <div className={styles.columns + ' mr-9'}>
                             <p className="text text_type_main-medium mb-6">Готовы:</p>
-                            <div className={styles.list}>
+                            <div className={styles.done}>
                                 {
-                                    ['034533', '034532'].map(nextNum => (
-                                        <p
-                                            key={nextNum}
-                                            className="text text_type_digits-default">
-                                            {nextNum}
-                                        </p>
-                                    ))
+                                    getOrdersWithStatus('done')
                                 }
                             </div>
                         </div>
-                        <div className={styles.column}>
+                        <div className={styles.columns}>
                             <p className="text text_type_main-medium mb-6">В работе:</p>
-                            <div className={styles.list}>
+                            <div className={styles.inWork}>
                                 {
-                                    ['034538', '034541'].map(nextNum => (
-                                        <p
-                                            key={nextNum}
-                                            className="text text_type_digits-default">
-                                            {nextNum}
-                                        </p>
-                                    ))
+                                    getOrdersWithStatus('done')
                                 }
                             </div>
                         </div>
@@ -86,20 +93,19 @@ export const Feed = () => {
                             Выполнено за все время:
                         </p>
                         <p className="text text_type_digits-large">
-                            28 752
+                            {total}
                         </p>
-
                     </div>
                     <div className={styles.total}>
                         <p className="text text_type_main-medium">
                             Выполнено за сегодня:
                         </p>
                         <p className="text text_type_digits-large">
-                            138
+                            {totalToday}
                         </p>
                     </div>
                 </div>
             </div>
-        </>        
+        </>
     );
 };

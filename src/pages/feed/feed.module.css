@@ -6,8 +6,12 @@
 .orders {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     flex: 0 0 600px;
+}
+
+.ordersBoard {
+    overflow-y: auto;
+    height: 80vh;
 }
 
 .queue {
@@ -24,12 +28,22 @@
 .columns {
     display: flex;
     flex-direction: column;
+    flex: 1 1;
 }
 
-.list {
+.inWork {
+    display: flex;
+    gap: 8px;
+}
+
+.done {
+    composes: inWork;
+    color: #00CCCC;
+}
+
+.numbersColumn {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .total > p + p {

@@ -3,27 +3,31 @@ import styles from './order-card.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { MAX_ORDER_INGREDIENTS } from '../../../utils/constants';
 import { Link } from 'react-router-dom';
-import { TOrder } from '../../../utils/types';
+import { TIngredient, TOrder } from '../../../utils/types';
+import { useIngredients } from '../../../hooks/useIngredients';
 
-export const OrderCard:FC<TOrder> = ({ id, time, name, ingredients, price }) => {
+export const OrderCard: FC<TOrder> = ({ _id, name, ingredients: ingredientsNumbers, status, number, createdAt, updatedAt }) => {
+    const { ingredients } = useIngredients(ingredientsNumbers);
 
-    const reversedIngredients = useMemo(() => {
-        const reversed = [...ingredients];
+    const reversedIngredients = useMemo<Array<TIngredient>>(() => {
+        const reversed = ingredients;
         reversed.reverse();
         return reversed;
     }, [ingredients]);
 
+    const price = ingredients.reduce((sum, nextItem) => sum + nextItem.price, 0);
+
     return (
         <Link
-            key={id}
-            to={`/feed/${id}`}
+            key={_id}
+            to={`/feed/${_id}`}
             className={styles.main + ' pr-6 pl-6 mb-4'}>
             <div className={styles.title + ' mt-6 mb-6'}>
                 <p className="text text_type_digits-default">
-                    #{id}
+                    #{number}
                 </p>
                 <p className="text text_type_main-default text_color_inactive mb-6">
-                    <FormattedDate date={new Date(time)} />
+                    <FormattedDate date={new Date(createdAt)} />
                 </p>                
             </div>
             <p className="text text_type_main-medium mb-6">

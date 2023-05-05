@@ -50,10 +50,18 @@ export type TDragged = {
 };
 
 export type TOrder = {
-    id: string;
-    time: string;
+    _id: string;
     name: string;
-    ingredients: Array<TIngredient>;
-    price: number;
-    status?: string;
+    ingredients: Array<string>;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type TWsMessage = {
+    success: boolean;
+    orders: Array<TOrder>;
+    total: number;
+    totalToday: number;
 };

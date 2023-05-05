@@ -1,25 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './order-page.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppSelector } from '../../../store/hooks';
-import { TOrder } from '../../../utils/types';
+import { useIngredients } from '../../../hooks/useIngredients';
 
-export const OrderPage = () => {
-    const { ingredients } = useAppSelector(store => store.ingredients);
-
-    const order = useMemo<TOrder>(() => ingredients && ({
-        id: '034535',
-        status: 'Выполнен',
-        time: '2022-10-10T17:33:32.877Z',
-        name: 'Death Star Starship Main бургер',
-        ingredients: [ingredients[0], ingredients[1], ingredients[2], ingredients[3]],
-        price: 480
-    }), [ingredients]);
+export const OrderPage = (props:any) => {
+    const { ingredients } = useIngredients(['']);
+    const { order } = props;
 
     return (
         order && <div className={styles.main}>
             <p className={styles.title + " text text_type_digits-default mb-10"}>
-                #{order.id}
+                #{order._id}
             </p>
             <p className="text text_type_main-medium mb-3">
                 {order.name}
@@ -32,7 +23,7 @@ export const OrderPage = () => {
             </p>
             <div className={styles.ingredients + ' mb-10 pr-6'}>
                 {
-                    order.ingredients.map(nextItem => {
+                    ingredients?.map(nextItem => {
                         return (
                             <div
                                 key={nextItem._id}
