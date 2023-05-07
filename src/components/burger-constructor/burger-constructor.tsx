@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, FC } from 'react';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { OrderDetails } from '../modals/order-details/order-details';
+import { OrderDetails } from '../modals/order-create-details/order-create-details';
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
 import { addIngredient } from '../../services/actions/burger-constructor';

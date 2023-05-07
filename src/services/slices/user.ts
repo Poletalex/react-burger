@@ -21,4 +21,4 @@ export const userSlice = createSlice({
 
 export const { setAuthChecked, setUser } = userSlice.actions;
 
-export const userRedicer = userSlice.reducer;
+export const userReducer = userSlice.reducer;

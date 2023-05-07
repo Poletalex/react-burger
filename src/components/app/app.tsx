@@ -18,7 +18,7 @@ import { Logout } from '../../pages/logout';
 import { Modal } from '../modals/modal/modal';
 import { useAppDispatch } from '../../store/hooks';
 import { Feed } from '../../pages/feed/feed';
-import { OrderPage } from '../order/order-page/order-page';
+import { OrderDetails } from '../order/order-details/order-details';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +46,7 @@ const App = () => {
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />
         <Route path="/logout" element={<WithAuth element={< Logout />} />} />
         <Route path="/feed" element={< Feed />} />
-        <Route path="/feed/:id" element={< OrderPage />} />
+        <Route path="/feed/:id" element={< OrderDetails />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
       {
@@ -59,6 +59,15 @@ const App = () => {
                   header='Детали ингредиента'
                   onClose={() => { navigate(-1); }}>
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path='/feed/:id'
+              element={
+                <Modal
+                  onClose={() => { navigate(-1); }}>
+                  <OrderDetails inModal={true}/>
                 </Modal>
               }
             />

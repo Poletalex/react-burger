@@ -15,7 +15,7 @@ const initialState: TWsStore = {
     wsMessage: null
 };
 
-export const feedReducer = createReducer(initialState, (builder) => {
+export const websocketReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(wsConnecting, (state) => {
             state.status = WebsocketStatus.CONNECTING;

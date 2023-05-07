@@ -45,8 +45,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware<{}, RootStat
                     dispatch(onOpen());
                 };
 
-                socket.onerror = (event) => {
-                    console.log(event);
+                socket.onerror = () => {
                     dispatch(onError('error'));
                 };
 
@@ -75,7 +74,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware<{}, RootStat
                 }
 
                 if (wsDisconnect.match(action)) {
-                    clearTimeout(reconnectTimer)
+                    clearTimeout(reconnectTimer);
                     isConnected = false;
                     reconnectTimer = 0;
                     socket.close();

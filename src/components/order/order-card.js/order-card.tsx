@@ -2,12 +2,20 @@ import React, { FC, useMemo } from 'react';
 import styles from './order-card.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { MAX_ORDER_INGREDIENTS } from '../../../utils/constants';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { TIngredient, TOrder } from '../../../utils/types';
 import { useIngredients } from '../../../hooks/useIngredients';
+import { useAppSelector } from '../../../store/hooks';
 
-export const OrderCard: FC<TOrder> = ({ _id, name, ingredients: ingredientsNumbers, status, number, createdAt, updatedAt }) => {
-    const { ingredients } = useIngredients(ingredientsNumbers);
+type TOrderCard = {
+    data: TOrder;
+    onClick: () => void
+};
+
+export const OrderCard: FC<TOrderCard> = ({ data, onClick }) => {
+    const { _id, name, status, number, createdAt } = data;
+    const { ingredients } = useIngredients(data.ingredients);
+    const location = useLocation();
 
     const reversedIngredients = useMemo<Array<TIngredient>>(() => {
         const reversed = ingredients;
@@ -21,7 +29,9 @@ export const OrderCard: FC<TOrder> = ({ _id, name, ingredients: ingredientsNumbe
         <Link
             key={_id}
             to={`/feed/${_id}`}
-            className={styles.main + ' pr-6 pl-6 mb-4'}>
+            state={{ background: location }}
+            className={styles.main + ' pr-6 pl-6 mb-4'}
+            onClick={onClick}>
             <div className={styles.title + ' mt-6 mb-6'}>
                 <p className="text text_type_digits-default">
                     #{number}
