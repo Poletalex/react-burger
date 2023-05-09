@@ -5,15 +5,20 @@ import { useIngredients } from '../../../hooks/useIngredients';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { connect } from '../../../services/actions/ws-feed';
 import { BURGER_WSS } from '../../../utils/constants';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { getOrderStatus } from '../../../utils/utils';
 
 type TOrderDetails = {
     inModal?: boolean;
 };
 
 export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
+    const location = useLocation();
+    // разные стейты в зависимости от маршрута
+    const { wsMessage } = useAppSelector(store =>
+        location.pathname.startsWith('/feed') ? store.wsFeed : store.wsProfile);
+
     const { id } = useParams();
-    const { wsMessage } = useAppSelector(store => store.websocket);
     const { orders } = wsMessage || {};
     const { order } = useAppSelector(store => {
         return { order: store.selectedOrder.order || orders?.find(nextOrder => nextOrder._id === id) };
@@ -29,11 +34,11 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const { ingredients } = useIngredients(order?.ingredients);
-    const price = ingredients?.reduce((sum, nextItem) => sum + nextItem.price, 0);
+    const { ingredients } = useIngredients(order?.ingredients || []);
+    const price = ingredients?.reduce((sum, nextItem) => sum + nextItem.price * nextItem.count, 0);
 
     return (
-        order ? (
+        order && status ? (
             <div className={`${styles.main} ${!inModal ? styles.withoutModal : ''}`}>
                 <p className={styles.title + " text text_type_digits-default mb-10"}>
                     #{number}
@@ -42,7 +47,7 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
                     {name}
                 </p>
                 <p className={styles.status + " text text_type_main-default mb-15"}>
-                    {status}
+                    {getOrderStatus(status)}
                 </p>
                 <p className="text text_type_main-medium mb-6">
                     Состав:
@@ -65,7 +70,7 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
                                     </p>
                                     <div className={styles.price}>
                                         <p className='text text_type_digits-default pr-1'>
-                                            {nextItem.price}
+                                            {nextItem.count} x {nextItem.price}
                                         </p>
                                         <CurrencyIcon type="primary" />
                                     </div>

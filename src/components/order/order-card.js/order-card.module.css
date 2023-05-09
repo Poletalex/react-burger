@@ -15,6 +15,10 @@ a:-webkit-any-link {
     justify-content: space-between;
 }
 
+.doneStatus {
+    color: #00CCCC;
+}
+
 .footer {
     display: flex;
     align-items: center;

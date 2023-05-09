@@ -11,7 +11,17 @@ import {
     wsError as FeedWsError
 } from "../services/actions/ws-feed";
 
-const wsActions = {
+import {
+    connect as ProfileWsConnect,
+    disconnect as ProfileWsDisconnect,
+    wsConnecting as ProfileWsConnecting,
+    wsOpen as ProfileWsOpen,
+    wsClose as ProfileWsClose,
+    wsMessage as ProfileWsMessage,
+    wsError as ProfileWsError
+} from "../services/actions/ws-profile";
+
+const wsFeedActions = {
     wsConnect: FeedWsConnect,
     wsDisconnect: FeedWsDisconnect,
     wsConnecting: FeedWsConnecting,
@@ -21,9 +31,20 @@ const wsActions = {
     onError: FeedWsError
 }; 
 
+const wsProfileActions = {
+    wsConnect: ProfileWsConnect,
+    wsDisconnect: ProfileWsDisconnect,
+    wsConnecting: ProfileWsConnecting,
+    onOpen: ProfileWsOpen,
+    onClose: ProfileWsClose,
+    onMessage: ProfileWsMessage,
+    onError: ProfileWsError
+}; 
+
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(wsActions)),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+        .concat(socketMiddleware(wsFeedActions), socketMiddleware(wsProfileActions)),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

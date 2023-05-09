@@ -19,7 +19,8 @@ export const createOrder = (data: Array<TIngredient | null>)  => (dispatch: Disp
                 const res = await customFetch('orders', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
                     },
                     body: JSON.stringify({
                         "ingredients": data.map(nextIngredient => nextIngredient?._id)

@@ -1,19 +1,15 @@
 .main {
-    margin-left: 10%;
-    margin-top: 10%;
+    margin-top: 5%;
     display: flex;
     left: 50%;
-    width: 480px;
-}
-
-.main p {
-    height: 64px;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
-    min-width: 320px;
+    width: 320px;
 }
 
 .form {
@@ -44,5 +40,11 @@
 
 .activeNavLink p {
     color: white;
+}
+
+.orders {
+    overflow-y: auto;
+    width: 800px;
+    height: 60vh;
 }
 

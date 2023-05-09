@@ -8,7 +8,6 @@ import { LoginPage } from '../../pages/login';
 import { RegisterPage } from '../../pages/register';
 import { ForgotPage } from '../../pages/forgot-password';
 import { ResetPage } from '../../pages/reset-password';
-import { ProfileNavigation } from '../../pages/profile/profile-navigation';
 import { WithAuth, WithoutAuth } from '../protected-route.js/protected-route';
 import { NotFound404 } from '../../pages/404';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details'
@@ -42,7 +41,7 @@ const App = () => {
         <Route path="/reset-password" element={<WithoutAuth element={<ResetPage />} />} />
         <Route path="/profile" element={<WithAuth element={<ProfileForm />} />} />
         <Route path="/profile/orders" element={<WithAuth element={<OrdersHistory />} />} />
-        <Route path="/profile/orders/:id" element={<WithAuth element={<ProfileNavigation />} />} />
+        <Route path="/profile/orders/:id" element={<WithAuth element={<OrderDetails />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />
         <Route path="/logout" element={<WithAuth element={< Logout />} />} />
         <Route path="/feed" element={< Feed />} />
@@ -68,6 +67,15 @@ const App = () => {
                 <Modal
                   onClose={() => { navigate(-1); }}>
                   <OrderDetails inModal={true}/>
+                </Modal>
+              }
+            />
+            <Route
+              path='/profile/orders/:id'
+              element={
+                <Modal
+                  onClose={() => { navigate(-1); }}>
+                  <OrderDetails inModal={true} />
                 </Modal>
               }
             />

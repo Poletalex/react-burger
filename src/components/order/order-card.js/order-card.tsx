@@ -3,9 +3,9 @@ import styles from './order-card.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { MAX_ORDER_INGREDIENTS } from '../../../utils/constants';
 import { Link, useLocation } from 'react-router-dom';
-import { TIngredient, TOrder } from '../../../utils/types';
+import { TOrder, TOrderIngredient } from '../../../utils/types';
 import { useIngredients } from '../../../hooks/useIngredients';
-import { useAppSelector } from '../../../store/hooks';
+import { getOrderStatus } from '../../../utils/utils';
 
 type TOrderCard = {
     data: TOrder;
@@ -17,13 +17,13 @@ export const OrderCard: FC<TOrderCard> = ({ data, onClick }) => {
     const { ingredients } = useIngredients(data.ingredients);
     const location = useLocation();
 
-    const reversedIngredients = useMemo<Array<TIngredient>>(() => {
+    const reversedIngredients = useMemo<Array<TOrderIngredient>>(() => {
         const reversed = ingredients;
         reversed.reverse();
         return reversed;
     }, [ingredients]);
 
-    const price = ingredients.reduce((sum, nextItem) => sum + nextItem.price, 0);
+    const price = ingredients.reduce((sum, nextItem) => sum + nextItem.price * nextItem.count, 0);
 
     return (
         <Link
@@ -40,8 +40,11 @@ export const OrderCard: FC<TOrderCard> = ({ data, onClick }) => {
                     <FormattedDate date={new Date(createdAt)} />
                 </p>                
             </div>
-            <p className="text text_type_main-medium mb-6">
+            <p className="text text_type_main-medium mb-2">
                 {name}
+            </p>
+            <p className={`${status === 'done' ? styles.doneStatus : ''} text text_type_main-dedault mb-6`}>
+                {getOrderStatus(status)}
             </p>
             <div className={styles.footer + ' mb-6'}>
                 <div className={styles.ingredients}>

@@ -2,19 +2,23 @@ import React, { useEffect, useCallback } from 'react';
 import styles from './feed.module.css';
 import { OrderCard } from '../../components/order/order-card.js/order-card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { connect } from '../../services/actions/ws-feed';
-import { BURGER_WSS } from '../../utils/constants';
+import { connect, disconnect } from '../../services/actions/ws-feed';
+import { BURGER_WSS, WebsocketStatus } from '../../utils/constants';
 import { TOrder } from '../../utils/types';
 import { selectOrder } from '../../services/slices/selected-order';
 
 export const Feed = () => {
     const { ingredients } = useAppSelector(store => store.ingredients);
-    const { wsMessage } = useAppSelector(store => store.websocket);
+    const { wsMessage, status } = useAppSelector(store => store.wsFeed);
     const { orders, total, totalToday } = wsMessage || {};
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(connect(`${BURGER_WSS}orders/all`));
+
+        /* return () => {
+            if (status !== WebsocketStatus.OFFLINE) dispatch(disconnect());
+        }; */
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // колбэк получения номеров заказов с определенным статусом
@@ -57,7 +61,7 @@ export const Feed = () => {
                 <p className="text text_type_main-medium mt-10 mb-5">Лента заказов</p>
                 <div className={styles.ordersBoard + ' pr-2'}>
                     {
-                        ingredients && orders?.map(nextOrder => (
+                        orders?.map(nextOrder => (
                             <OrderCard
                                 key={nextOrder._id}
                                 data={nextOrder}

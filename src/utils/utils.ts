@@ -1,5 +1,5 @@
-import { BURGER_API, Category } from "./constants";
-import { TIngredient } from "./types";
+import { BURGER_API, Category, ORDER_STATUS } from "./constants";
+import { TIngredient, TOrderStatus } from "./types";
 
 export const getFilteredData = (arr: TIngredient[]) => {
     let hasBun = false;
@@ -100,3 +100,5 @@ export const fetchWithRefresh = async (url: string, options: any ) => {
         }
     }
 };
+
+export const getOrderStatus = (status: TOrderStatus): string => ORDER_STATUS[status];

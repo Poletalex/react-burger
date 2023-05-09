@@ -1,13 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { WebsocketStatus } from "../../utils/constants";
-import { TWsMessage } from "../../utils/types";
+import { TWsStore } from "../../utils/types";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/ws-feed";
-
-export type TWsStore = {
-    status: WebsocketStatus;
-    error: string;
-    wsMessage: TWsMessage | null;
-}
 
 const initialState: TWsStore = {
     status: WebsocketStatus.OFFLINE,
@@ -15,7 +9,7 @@ const initialState: TWsStore = {
     wsMessage: null
 };
 
-export const websocketReducer = createReducer(initialState, (builder) => {
+export const wsReducerCreator = () => createReducer(initialState, (builder) => {
     builder
         .addCase(wsConnecting, (state) => {
             state.status = WebsocketStatus.CONNECTING;
