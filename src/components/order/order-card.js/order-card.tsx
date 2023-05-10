@@ -5,7 +5,7 @@ import { MAX_ORDER_INGREDIENTS } from '../../../utils/constants';
 import { Link, useLocation } from 'react-router-dom';
 import { TOrder, TOrderIngredient } from '../../../utils/types';
 import { useIngredients } from '../../../hooks/useIngredients';
-import { getOrderStatus } from '../../../utils/utils';
+import { getOrderStatus, getTotalPrice } from '../../../utils/utils';
 
 type TOrderCard = {
     data: TOrder;
@@ -23,7 +23,7 @@ export const OrderCard: FC<TOrderCard> = ({ data, onClick }) => {
         return reversed;
     }, [ingredients]);
 
-    const price = ingredients.reduce((sum, nextItem) => sum + nextItem.price * nextItem.count, 0);
+    const price = ingredients.reduce(getTotalPrice, 0);
 
     return (
         <Link

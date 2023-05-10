@@ -7,7 +7,6 @@ import { addIngredient } from '../../services/actions/burger-constructor';
 import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
-import { Category } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../loader/loader';
 import { TDragged } from '../../utils/types';
@@ -15,10 +14,10 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const BurgerConstructor: FC = () => {
     const { bun, notBun } = useAppSelector(store => store.burgerConstructor);
-    const fullData = useMemo(() => [...notBun, bun].filter(nextItem => nextItem), [bun, notBun]);
+    const fullData = useMemo(() => [...notBun, bun, bun].filter(nextItem => nextItem), [bun, notBun]);
 
     const totalPrice = useMemo(() => fullData.reduce((sum, nextItem) => nextItem ?
-        sum + (nextItem.type === Category.BUN ? nextItem.price * 2 : nextItem.price) : sum, 0), [fullData]);
+        sum + nextItem.price : sum, 0), [fullData]);
 
     const dispatch = useAppDispatch();
 

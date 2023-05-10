@@ -9,7 +9,6 @@ import { connect, disconnect } from "../../services/actions/ws-profile";
 
 export const OrdersHistory = () => {
     const dispatch = useAppDispatch();
-    const { ingredients } = useAppSelector(store => store.ingredients);
     const { wsMessage, status } = useAppSelector(store => store.wsProfile);
     const { orders } = wsMessage || {};
 
@@ -17,9 +16,9 @@ export const OrdersHistory = () => {
         const accessToken = localStorage.getItem("accessToken");
         dispatch(connect(`${BURGER_WSS}orders?token=${accessToken}`));
 
-        /* return () => {
+        return () => {
             if (status !== WebsocketStatus.OFFLINE) dispatch(disconnect());
-        }; */
+        };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
@@ -29,7 +28,7 @@ export const OrdersHistory = () => {
             </div>
             <div className={styles.orders + ' ml-15 pr-2'}>
                 {
-                    ingredients && orders?.map(nextOrder => (
+                    orders?.map(nextOrder => (
                         <OrderCard
                             key={nextOrder._id}
                             data={nextOrder}

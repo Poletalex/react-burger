@@ -8,7 +8,6 @@ import { TOrder } from '../../utils/types';
 import { selectOrder } from '../../services/slices/selected-order';
 
 export const Feed = () => {
-    const { ingredients } = useAppSelector(store => store.ingredients);
     const { wsMessage, status } = useAppSelector(store => store.wsFeed);
     const { orders, total, totalToday } = wsMessage || {};
     const dispatch = useAppDispatch();
@@ -16,9 +15,9 @@ export const Feed = () => {
     useEffect(() => {
         dispatch(connect(`${BURGER_WSS}orders/all`));
 
-        /* return () => {
+        return () => {
             if (status !== WebsocketStatus.OFFLINE) dispatch(disconnect());
-        }; */
+        };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // колбэк получения номеров заказов с определенным статусом

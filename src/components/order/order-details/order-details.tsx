@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { connect } from '../../../services/actions/ws-feed';
 import { BURGER_WSS } from '../../../utils/constants';
 import { useLocation, useParams } from 'react-router-dom';
-import { getOrderStatus } from '../../../utils/utils';
+import { getOrderStatus, getTotalPrice } from '../../../utils/utils';
 
 type TOrderDetails = {
     inModal?: boolean;
@@ -35,7 +35,7 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const { ingredients } = useIngredients(order?.ingredients || []);
-    const price = ingredients?.reduce((sum, nextItem) => sum + nextItem.price * nextItem.count, 0);
+    const price = ingredients?.reduce(getTotalPrice, 0);
 
     return (
         order && status ? (

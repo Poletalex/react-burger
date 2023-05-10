@@ -1,5 +1,5 @@
 import { BURGER_API, Category, ORDER_STATUS } from "./constants";
-import { TIngredient, TOrderStatus } from "./types";
+import { TIngredient, TOrderIngredient, TOrderStatus } from "./types";
 
 export const getFilteredData = (arr: TIngredient[]) => {
     let hasBun = false;
@@ -102,3 +102,5 @@ export const fetchWithRefresh = async (url: string, options: any ) => {
 };
 
 export const getOrderStatus = (status: TOrderStatus): string => ORDER_STATUS[status];
+
+export const getTotalPrice = (sum: number, nextItem: TOrderIngredient) => sum + nextItem.price * nextItem.count;
