@@ -28,7 +28,7 @@ export const OrderCard: FC<TOrderCard> = ({ data, onClick }) => {
     return (
         <Link
             key={_id}
-            to={`/feed/${_id}`}
+            to={`${location.pathname}/${number}`}
             state={{ background: location }}
             className={styles.main + ' pr-6 pl-6 mb-4'}
             onClick={onClick}>

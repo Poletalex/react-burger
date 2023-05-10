@@ -3,42 +3,31 @@ import styles from './order-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useIngredients } from '../../../hooks/useIngredients';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { connect } from '../../../services/actions/ws-feed';
-import { BURGER_WSS } from '../../../utils/constants';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getOrderStatus, getTotalPrice } from '../../../utils/utils';
+import { getOrder } from '../../../services/actions/order';
 
 type TOrderDetails = {
     inModal?: boolean;
 };
 
 export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
-    const location = useLocation();
-    // разные стейты в зависимости от маршрута
-    const { wsMessage } = useAppSelector(store =>
-        location.pathname.startsWith('/feed') ? store.wsFeed : store.wsProfile);
-
     const { id } = useParams();
-    const { orders } = wsMessage || {};
-    const { order } = useAppSelector(store => {
-        return { order: store.selectedOrder.order || orders?.find(nextOrder => nextOrder._id === id) };
-    });    
+    const { order } = useAppSelector(store => store.order);    
     const { name, status, number, createdAt } = order || {};
     const dispatch = useAppDispatch();
 
-    /* создание соединения по ws для запроса всех заказов, 
-    в случае если перешли по прямой ссылке */
     useEffect(() => {
-        if (!order) {
-            dispatch(connect(`${BURGER_WSS}orders/all`));
-        }
+        if (id) {
+            dispatch(getOrder(id))
+        };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const { ingredients } = useIngredients(order?.ingredients || []);
     const price = ingredients?.reduce(getTotalPrice, 0);
 
     return (
-        order && status ? (
+        order && (
             <div className={`${styles.main} ${!inModal ? styles.withoutModal : ''}`}>
                 <p className={styles.title + " text text_type_digits-default mb-10"}>
                     #{number}
@@ -47,7 +36,7 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
                     {name}
                 </p>
                 <p className={styles.status + " text text_type_main-default mb-15"}>
-                    {getOrderStatus(status)}
+                    {status ? getOrderStatus(status) : null}
                 </p>
                 <p className="text text_type_main-medium mb-6">
                     Состав:
@@ -90,6 +79,6 @@ export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-            </div>) : null
+            </div>)
     );
 };

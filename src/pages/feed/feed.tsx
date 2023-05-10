@@ -85,7 +85,7 @@ export const Feed = () => {
                         <p className="text text_type_main-medium mb-6">В работе:</p>
                         <div className={styles.inWork}>
                             {
-                                getOrdersWithStatus('pending')
+                                getOrdersWithStatus('created')
                             }
                         </div>
                     </div>

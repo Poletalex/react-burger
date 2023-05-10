@@ -4,13 +4,14 @@ import { OrderDetails } from '../modals/order-create-details/order-create-detail
 import { Modal } from '../modals/modal/modal';
 import styles from './burger-constructor.module.css';
 import { addIngredient } from '../../services/actions/burger-constructor';
-import { CLOSE_ORDER_MODAL, createOrder } from '../../services/actions/order';
+import { createOrder } from '../../services/actions/order';
 import { useDrop } from 'react-dnd/dist/hooks/useDrop';
 import { DraggableIngredient } from './draggable-ingredient/draggable-ingredient';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../loader/loader';
 import { TDragged } from '../../utils/types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { clearOrderNum } from '../../services/slices/order';
 
 export const BurgerConstructor: FC = () => {
     const { bun, notBun } = useAppSelector(store => store.burgerConstructor);
@@ -21,7 +22,7 @@ export const BurgerConstructor: FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { orderNum, request } = useAppSelector(store => store.order);
+    const { orderNum, status } = useAppSelector(store => store.order);
 
     const [{ isHover }, dropRef] = useDrop({
         accept: 'ingredient',
@@ -99,12 +100,10 @@ export const BurgerConstructor: FC = () => {
                 }
             </footer>
             {
-                (request || orderNum) && (
-                    <Modal onClose={() => dispatch({
-                        type: CLOSE_ORDER_MODAL
-                    })}>
+                (status !== 'idle' || orderNum) && (
+                    <Modal onClose={() => dispatch(clearOrderNum())}>
                         {
-                            request ? (<Loader />) : (<OrderDetails orderNum={orderNum} />)
+                            status === 'loading' ? (<Loader />) : orderNum && (<OrderDetails orderNum={orderNum} />)
                         }
                     </Modal>
                 )

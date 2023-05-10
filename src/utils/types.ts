@@ -81,3 +81,9 @@ export type TSelectedOrderState = {
 export type TOrderIngredient = TIngredient & {
     count: number;
 };
+
+export type TOrderState = {
+    order: TOrder | null;
+    orderNum: number | null;
+    status: 'idle' | 'loading' | 'success' | 'failed'
+};
