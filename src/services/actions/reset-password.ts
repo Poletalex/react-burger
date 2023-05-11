@@ -6,6 +6,24 @@ export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 export const RESET_PASSWORD_CLOSE = 'RESET_PASSWORD_CLOSE';
 
+type TResetPasswordRequest = {
+    readonly type: typeof RESET_PASSWORD_REQUEST;
+};
+type TResetPasswordSuccess = {
+    readonly type: typeof RESET_PASSWORD_SUCCESS;
+};
+type TResetPasswordFailed = {
+    readonly type: typeof RESET_PASSWORD_FAILED;
+};
+type TResetPasswordClose = {
+    readonly type: typeof RESET_PASSWORD_CLOSE;
+};
+export type TResetPasswordActions =
+    TResetPasswordRequest |
+    TResetPasswordSuccess |
+    TResetPasswordFailed |
+    TResetPasswordClose;
+
 type TPassword = {
     password: string;
     token: string;

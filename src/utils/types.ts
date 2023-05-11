@@ -87,3 +87,7 @@ export type TOrderState = {
     orderNum: number | null;
     status: 'idle' | 'loading' | 'success' | 'failed'
 };
+
+export type TSelectIngredientState = {
+    ingredient: TIngredient | null;
+};

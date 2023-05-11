@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, SyntheticEvent } from 'rea
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
 import styles from './burger-ingredients.module.css';
-import { SELECT_INGREDIENT } from '../../services/actions/modal';
+import { SELECT_INGREDIENT } from '../../services/actions/selected-ingredient';
 import { categories, getСategorizedData } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 

@@ -17,7 +17,7 @@ export const useIngredients = (numbers: Array<string>): THookResult => {
     return {
         ingredients: (numbers)
             .reduce((res, nextNumber) => {
-                const found = ingredients.find((ingredient: TIngredient) => ingredient._id === nextNumber);
+                const found = ingredients?.find((ingredient: TIngredient) => ingredient._id === nextNumber);
                 if (found) { 
                     const existed = res.find((ingredient: TOrderIngredient) => ingredient._id === nextNumber);
                     if (existed) {

@@ -18,6 +18,7 @@ import { Modal } from '../modals/modal/modal';
 import { useAppDispatch } from '../../store/hooks';
 import { Feed } from '../../pages/feed/feed';
 import { OrderDetails } from '../order/order-details/order-details';
+import { checkUserAuth } from '../../services/actions/user';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(checkUserAuth());
     // eslint-disable-next-line
   }, []);
 

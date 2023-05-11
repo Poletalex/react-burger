@@ -3,7 +3,7 @@ import styles from './order-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useIngredients } from '../../../hooks/useIngredients';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { getOrderStatus, getTotalPrice } from '../../../utils/utils';
 import { getOrder } from '../../../services/actions/order';
 
@@ -11,15 +11,25 @@ type TOrderDetails = {
     inModal?: boolean;
 };
 
-export const OrderDetails: FC<TOrderDetails> = ({inModal}) => {
+export const OrderDetails: FC<TOrderDetails> = ({ inModal }) => {
+    const location = useLocation();
+    // разные стейты в зависимости от маршрута
+    const { wsMessage } = useAppSelector(store =>
+        location.pathname.startsWith('/feed') ? store.wsFeed : store.wsProfile);
+    
     const { id } = useParams();
-    const { order } = useAppSelector(store => store.order);    
+    const { orders } = wsMessage || {};
+    const wsOrder = orders?.find(nextOrder => nextOrder.number.toString() === id);
+    const { order } = useAppSelector(store => {
+        return { order: wsOrder || store.order.order };
+    }); 
     const { name, status, number, createdAt } = order || {};
     const dispatch = useAppDispatch();
 
+    // запрос заказа по номеру, в случае, если он не пришел по сокету
     useEffect(() => {
-        if (id) {
-            dispatch(getOrder(id))
+        if (id && !wsOrder) {
+            dispatch(getOrder(id));
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

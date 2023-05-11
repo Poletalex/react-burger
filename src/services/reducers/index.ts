@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { constructorReducer } from './burger-constructor';
 import { forgotPasswordReducer } from './forgot-password';
 import { ingredientsReducer } from './ingredients';
-import { modalReducer } from './modal';
+import { selectedIngredientReducer } from './selected-ingredient';
 import { resetPasswordReducer } from './reset-password';
 import { userReducer } from '../slices/user';
 import { wsFeedReducer } from './ws-feed';
@@ -14,7 +14,7 @@ export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
     burgerConstructor: constructorReducer,
     order: orderReducer,
-    modal: modalReducer,
+    selectedIngredient: selectedIngredientReducer,
     forgotPassword: forgotPasswordReducer,
     resetPassword: resetPasswordReducer,
     user: userReducer,

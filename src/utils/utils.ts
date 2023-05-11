@@ -41,7 +41,7 @@ export const categories = [
     }
 ];
 
-export const getСategorizedData = (data: Array<TIngredient>) => {
+export const getСategorizedData = (data: Array<TIngredient> | null) => {
     const categorizedData: TCategory[] = JSON.parse(JSON.stringify(categories));
 
     if (data) {
@@ -99,6 +99,14 @@ export const fetchWithRefresh = async (url: string, options: any ) => {
             throw err;
         }
     }
+};
+
+export const wsRefreshToken = async () => {
+    try {
+        const { accessToken, refreshToken } = await tokenRefresh();
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("accessToken", accessToken);
+    } catch {}
 };
 
 export const getOrderStatus = (status: TOrderStatus): string => ORDER_STATUS[status];

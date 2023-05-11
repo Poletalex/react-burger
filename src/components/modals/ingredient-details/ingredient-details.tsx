@@ -5,12 +5,12 @@ import { useAppSelector } from '../../../store/hooks';
 import { TIngredientState } from '../../../utils/types';
 
 export const IngredientDetails = () => {
-    const { ingredient } = useAppSelector(store => store.modal);
+    const { ingredient } = useAppSelector(store => store.selectedIngredient);
     const { ingredients } = useAppSelector<TIngredientState>(store => store.ingredients);
     const { ingredientId } = useParams(); 
     const currentIngredient = ingredient || ingredients?.find(nextIngredient => nextIngredient._id === ingredientId);
 
-    return currentIngredient && (
+    return currentIngredient ? (
         <div className={styles.content}>
             <img
                 className='mb-4'
@@ -41,5 +41,5 @@ export const IngredientDetails = () => {
                 }
             </div>
         </div>
-    );
+    ) : null;
 };
