@@ -1,16 +1,13 @@
 import React, { useState, useMemo, useRef, useEffect, SyntheticEvent } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../ingredient/ingredient';
-import { Modal } from '../modals/modal/modal';
-import { IngredientDetails } from '../modals/ingredient-details/ingredient-details';
 import styles from './burger-ingredients.module.css';
-import { CLOSE_INGREDIENT_MODAL, SELECT_INGREDIENT } from '../../services/actions/modal';
+import { SELECT_INGREDIENT } from '../../services/actions/selected-ingredient';
 import { categories, getСategorizedData } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const BurgerIngredients = () => {
     const [activeTab, setTab] = useState(categories[0].title);
-    const [showModal, setShow] = useState(false);
 
     const { ingredients } = useAppSelector(store => store.ingredients);
 
@@ -90,20 +87,6 @@ export const BurgerIngredients = () => {
                         </div>))
                 }
             </div>
-            {
-                showModal && (
-                    <Modal
-                        header='Детали ингредиента'
-                        onClose={() => {
-                            setShow(false);
-                            dispatch({
-                                type: CLOSE_INGREDIENT_MODAL
-                            })
-                        }} >
-                        <IngredientDetails />
-                    </Modal>
-                )
-            }
         </div>
     );
 };

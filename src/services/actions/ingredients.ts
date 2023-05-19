@@ -1,9 +1,25 @@
 import { Dispatch } from "redux";
 import { customFetch } from "../../utils/utils";
+import { TIngredient } from "../../utils/types";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+
+type TGetIngredientsRequest = {
+    readonly type: typeof GET_INGREDIENTS_REQUEST;
+};
+type TGetIngredientsSuccess = {
+    readonly type: typeof GET_INGREDIENTS_SUCCESS;
+    readonly ingredients: TIngredient[]; 
+};
+type TGetIngredientsFailed = {
+    readonly type: typeof GET_INGREDIENTS_FAILED;
+};
+export type TGetIngredientsActions =
+    TGetIngredientsRequest |
+    TGetIngredientsSuccess |
+    TGetIngredientsFailed;
 
 export const getIngredients = () => (dispatch: Dispatch) => {
     dispatch({

@@ -6,7 +6,8 @@ export const ProfileNavigation = () => {
     return (
             <>
                 <NavLink
-                    to={'/profile'}
+                    end
+                    to={'/profile '}
                     className={({ isActive }) =>
                         (`mr-2 mt-4 mb-4 pl-5 pr-5 ` + (isActive ? styles.activeNavLink : styles.navLink))}>
                     <p className="text text_type_main-medium text_color_inactive">
@@ -14,6 +15,7 @@ export const ProfileNavigation = () => {
                     </p>
                 </NavLink>
                 <NavLink
+                    end
                     to={'/profile/orders'}
                     className={({ isActive }) =>
                         (`mr-2 mt-4 mb-4 pl-5 pr-5 ` + (isActive ? styles.activeNavLink : styles.navLink))}>

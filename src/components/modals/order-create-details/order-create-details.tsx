@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import doneIcon from '../../../images/done.svg';
-import styles from './order-details.module.css';
+import styles from './order-create-details.module.css';
 
 type TOrder = {
     orderNum: number;

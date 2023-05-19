@@ -13,9 +13,9 @@ export const AppHeader = () => {
                 icon='burger'
             />
             <Navigation
-                to='/list'
+                to='/feed'
                 title='Лента заказов'
-                icon='list'
+                icon='feed'
             />
             <Link
                 to='/'

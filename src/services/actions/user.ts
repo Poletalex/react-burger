@@ -5,15 +5,7 @@ import { AppDispatch } from "../../store/store";
 
 export const checkUserAuth = () => (dispatch: AppDispatch) => {
     if (localStorage.getItem('accessToken')) {
-        try {
-            dispatch(getUser());
-        } catch {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            dispatch(setUser(null));
-        } finally {
-            dispatch(setAuthChecked(true));
-        }
+        dispatch(getUser());
     } else {
         dispatch(setAuthChecked(true));
     }
@@ -34,7 +26,9 @@ export const getUser = () => (dispatch: AppDispatch) => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             dispatch(setUser(null));
-        };
+        } finally {
+            dispatch(setAuthChecked(true));
+        }
     })();
 };
 

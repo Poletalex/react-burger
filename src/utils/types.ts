@@ -1,4 +1,4 @@
-import { Category } from "./constants";
+import { Category, WebsocketStatus } from "./constants";
 
 export type TIngredient = {
     _id: string;
@@ -45,6 +45,49 @@ export type TForm = {
 };
 
 export type TDragged = {
-    id: number,
-    ingredient: TIngredient
+    id: number;
+    ingredient: TIngredient;
+};
+
+export type TOrderStatus = 'created' | 'pending' | 'done';
+
+export type TOrder = {
+    _id: string;
+    name: string;
+    ingredients: Array<string>;
+    status: TOrderStatus;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type TWsStore = {
+    status: WebsocketStatus;
+    error: string;
+    wsMessage: TWsMessage | null;
+}
+
+export type TWsMessage = {
+    success: boolean;
+    orders: Array<TOrder>;
+    total: number;
+    totalToday: number;
+};
+
+export type TSelectedOrderState = {
+    order: TOrder | null;
+};
+
+export type TOrderIngredient = TIngredient & {
+    count: number;
+};
+
+export type TOrderState = {
+    order: TOrder | null;
+    orderNum: number | null;
+    status: 'idle' | 'loading' | 'success' | 'failed'
+};
+
+export type TSelectIngredientState = {
+    ingredient: TIngredient | null;
 };

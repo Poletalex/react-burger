@@ -4,7 +4,8 @@ import {
     ADD_INGREDIENT,
     CLEAR_INGREDIENTS,
     REMOVE_INGREDIENT,
-    SORT_INGREDIENTS
+    SORT_INGREDIENTS,
+    TBurgerConstructorActions
 } from "../actions/burger-constructor";
 
 const initialState: TConstructorState = {
@@ -12,7 +13,7 @@ const initialState: TConstructorState = {
     notBun: []
 };
 
-export const constructorReducer = (state = initialState, action: any) => {
+export const constructorReducer = (state = initialState, action: TBurgerConstructorActions) => {
     switch (action.type) { 
         case ADD_INGREDIENT: { 
             return action.ingredient.type === Category.BUN ?

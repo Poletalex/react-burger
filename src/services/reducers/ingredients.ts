@@ -2,7 +2,8 @@ import { TIngredientState } from '../../utils/types';
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
-    GET_INGREDIENTS_FAILED
+    GET_INGREDIENTS_FAILED,
+    TGetIngredientsActions
 } from '../actions/ingredients';
 
 const initialState: TIngredientState = {
@@ -11,7 +12,7 @@ const initialState: TIngredientState = {
     failed: false
 };
 
-export const ingredientsReducer = (state = initialState, action: any) => {
+export const ingredientsReducer = (state = initialState, action: TGetIngredientsActions) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
