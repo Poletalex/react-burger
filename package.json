@@ -32,8 +32,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "./",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -53,6 +56,9 @@
     ]
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "fetch-mock": "^9.11.0",
+    "gh-pages": "^5.0.0",
+    "redux-mock-store": "^1.5.4"
   }
 }
