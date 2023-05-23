@@ -42,21 +42,29 @@ describe('wsFeed reducer', () => {
     });
 
     it('wsMessage', () => {
+        const payload = {
+            success: true,
+            orders: [],
+            total: 10,
+            totalToday: 1
+        };
         expect(wsFeedReducer(undefined, {
-            type: wsMessage.type
+            type: wsMessage.type,
+            payload
         })).toEqual({
             status: WebsocketStatus.OFFLINE,
             error: '',
-            wsMessage: undefined
+            wsMessage: payload
         });
     });
 
     it('wsError', () => {
         expect(wsFeedReducer(undefined, {
-            type: wsError.type
+            type: wsError.type,
+            payload: 'test error'
         })).toEqual({
             status: WebsocketStatus.OFFLINE,
-            error: undefined,
+            error: 'test error',
             wsMessage: null
         });
     });

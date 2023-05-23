@@ -27,7 +27,7 @@ describe('wsProfile reducer', () => {
         })).toEqual({
             status: WebsocketStatus.ONLINE,
             error: '',
-            wsMessage: null            
+            wsMessage: null
         });
     });
 
@@ -42,21 +42,29 @@ describe('wsProfile reducer', () => {
     });
 
     it('wsMessage', () => {
+        const payload = {
+            success: true,
+            orders: [],
+            total: 10,
+            totalToday: 1
+        };
         expect(wsProfileReducer(undefined, {
-            type: wsMessage.type
+            type: wsMessage.type,
+            payload
         })).toEqual({
             status: WebsocketStatus.OFFLINE,
             error: '',
-            wsMessage: undefined
+            wsMessage: payload
         });
     });
 
     it('wsError', () => {
         expect(wsProfileReducer(undefined, {
-            type: wsError.type
+            type: wsError.type,
+            payload: 'test error'
         })).toEqual({
             status: WebsocketStatus.OFFLINE,
-            error: undefined,
+            error: 'test error',
             wsMessage: null
         });
     });

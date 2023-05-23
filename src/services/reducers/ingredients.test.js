@@ -4,6 +4,7 @@ import {
     GET_INGREDIENTS_SUCCESS,
     GET_INGREDIENTS_FAILED
 } from '../actions/ingredients';
+import ingredients from '../../../cypress/fixtures/burger-constructor/ingredients.json';
 
 describe('ingredients reducer', () => {
     it('инициализация', () => {
@@ -26,10 +27,11 @@ describe('ingredients reducer', () => {
 
     it('запрос выполнен успешно', () => {
         expect(ingredientsReducer(undefined, {
-            type: GET_INGREDIENTS_SUCCESS
+            type: GET_INGREDIENTS_SUCCESS,
+            ingredients: ingredients.data
         })).toEqual({
             failed: false,
-            ingredients: undefined,
+            ingredients: ingredients.data,
             request: false
         });
     });
