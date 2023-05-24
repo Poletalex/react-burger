@@ -3,7 +3,7 @@ import { WebsocketStatus } from "../../utils/constants";
 import { TWsStore } from "../../utils/types";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/ws-feed";
 
-const initialState: TWsStore = {
+export const initialState: TWsStore = {
     status: WebsocketStatus.OFFLINE,
     error: '',
     wsMessage: null

@@ -1,8 +1,8 @@
 describe('Оформление заказа', () => {
     before(() => {
-        cy.visit('http://localhost:3000');
+        cy.visit('/');
 
-        cy.intercept('GET', '*/ingredients', {
+        cy.intercept('GET', 'ingredients', {
             fixture: "burger-constructor/ingredients.json",
         }).as('getIngredients');
 
@@ -12,7 +12,7 @@ describe('Оформление заказа', () => {
 
         cy.intercept('POST', '*/orders', {
             fixture: "burger-constructor/order.json"
-        }).as('login');
+        }).as('orders');
 
         cy.wait(['@getIngredients']);
     });
@@ -39,13 +39,15 @@ describe('Оформление заказа', () => {
 
 
         cy.findByText('Оформить заказ').first().click();
-        cy.url().should('contain', 'http://localhost:3000/login');
+        cy.url().should('contain', 'login');
         cy.get('input[type=email]').type('nafanalex@gmail.com');
         cy.get('input[type=password]').type('      ');
 
         cy.findByText('Войти').first().click();
         cy.findByText('Оформить заказ').first().click();
 
-        cy.get('[class^=order-create-details_order__]').first().should('contain', 1234)
+        cy.get('[class^=order-create-details_order__]').first().should('contain', 1234);
+        cy.get('body').type('{esc}')
+        cy.url().should('contain', '');
     });
 }); 

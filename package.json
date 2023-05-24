@@ -37,7 +37,7 @@
     "deploy": "gh-pages -d build",
     "cypress": "cypress open"
   },
-  "homepage": "./",
+  "homepage": "https://poletalex.github.io/react-burger",
   "eslintConfig": {
     "extends": [
       "react-app",

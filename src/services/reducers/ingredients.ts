@@ -6,7 +6,7 @@ import {
     TGetIngredientsActions
 } from '../actions/ingredients';
 
-const initialState: TIngredientState = {
+export const initialState: TIngredientState = {
     ingredients: null,
     request: false,
     failed: false

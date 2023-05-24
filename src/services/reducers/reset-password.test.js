@@ -5,23 +5,21 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS
 } from "../actions/reset-password";
+import { initialState } from "./reset-password";
 
 describe('reset password reducer', () => {
     it('инициализация', () => {
-        expect(resetPasswordReducer(undefined, {})).toEqual({
-            request: false,
-            success: false,
-            failed: false
-        });
+        expect(resetPasswordReducer(undefined, {})).toEqual(initialState);
     });
 
     it('выполнение запроса', () => {
         expect(resetPasswordReducer(undefined, {
             type: RESET_PASSWORD_REQUEST
         })).toEqual({
+            ...initialState,
             request: true,
             success: false,
-            failed: false,
+            failed: false
         });
     });
 
@@ -29,9 +27,9 @@ describe('reset password reducer', () => {
         expect(resetPasswordReducer(undefined, {
             type: RESET_PASSWORD_SUCCESS
         })).toEqual({
-            failed: false,
-            request: false,
-            success: true
+            ...initialState,
+            success: true,
+            request: false
         });
     });
 
@@ -39,7 +37,7 @@ describe('reset password reducer', () => {
         expect(resetPasswordReducer(undefined, {
             type: RESET_PASSWORD_FAILED
         })).toEqual({
-            success: false,
+            ...initialState,
             failed: true,
             request: false
         });
@@ -48,11 +46,7 @@ describe('reset password reducer', () => {
     it('выход со страницы', () => {
         expect(resetPasswordReducer(undefined, {
             type: RESET_PASSWORD_CLOSE
-        })).toEqual({
-            success: false,
-            failed: false,
-            request: false
-        });
+        })).toEqual(initialState);
     });
 
 

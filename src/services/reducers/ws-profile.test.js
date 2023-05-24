@@ -1,23 +1,19 @@
 import { WebsocketStatus } from "../../utils/constants";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/ws-profile";
 import { wsProfileReducer } from "./ws-profile";
+import { initialState } from "./ws-profile";
 
 describe('wsProfile reducer', () => {
     it('инициализация', () => {
-        expect(wsProfileReducer(undefined, {})).toEqual({
-            status: WebsocketStatus.OFFLINE,
-            error: '',
-            wsMessage: null
-        });
+        expect(wsProfileReducer(undefined, {})).toEqual(initialState);
     });
 
     it('wsConnecting', () => {
         expect(wsProfileReducer(undefined, {
             type: wsConnecting.type
         })).toEqual({
-            status: WebsocketStatus.CONNECTING,
-            error: '',
-            wsMessage: null
+            ...initialState,
+            status: WebsocketStatus.CONNECTING
         });
     });
 
@@ -25,9 +21,9 @@ describe('wsProfile reducer', () => {
         expect(wsProfileReducer(undefined, {
             type: wsOpen.type
         })).toEqual({
+            ...initialState,
             status: WebsocketStatus.ONLINE,
-            error: '',
-            wsMessage: null
+            error: ''
         });
     });
 
@@ -35,9 +31,8 @@ describe('wsProfile reducer', () => {
         expect(wsProfileReducer(undefined, {
             type: wsClose.type
         })).toEqual({
-            status: WebsocketStatus.OFFLINE,
-            error: '',
-            wsMessage: null
+            ...initialState,
+            status: WebsocketStatus.OFFLINE
         });
     });
 
@@ -52,8 +47,7 @@ describe('wsProfile reducer', () => {
             type: wsMessage.type,
             payload
         })).toEqual({
-            status: WebsocketStatus.OFFLINE,
-            error: '',
+            ...initialState,
             wsMessage: payload
         });
     });
@@ -63,9 +57,8 @@ describe('wsProfile reducer', () => {
             type: wsError.type,
             payload: 'test error'
         })).toEqual({
-            status: WebsocketStatus.OFFLINE,
-            error: 'test error',
-            wsMessage: null
+            ...initialState,
+            error: 'test error'
         });
     });
 });

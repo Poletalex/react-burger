@@ -5,59 +5,18 @@ import {
     SORT_INGREDIENTS,
     CLEAR_INGREDIENTS
 } from '../actions/burger-constructor';
+import { initialState } from './burger-constructor';
+import { data } from '../../../cypress/fixtures/burger-constructor/ingredients.json';
+import { Category } from '../../utils/constants';
 
 describe('constructor reducer', () => {
     it('инициализация', () => {
-        expect(constructorReducer(undefined, {})).toEqual({
-            bun: null,
-            notBun: []
-        });
+        expect(constructorReducer(undefined, {})).toEqual(initialState);
     });
 
-    const bun = {
-        "_id": "643d69a5c3f7b9001cfa093c",
-        "name": "Краторная булка N-200i",
-        "type": "bun",
-        "proteins": 80,
-        "fat": 24,
-        "carbohydrates": 53,
-        "calories": 420,
-        "price": 1255,
-        "image": "https://code.s3.yandex.net/react/code/bun-02.png",
-        "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-        "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
-        "__v": 0
-    };
-
-    const ingredient1 = {
-        "_id": "643d69a5c3f7b9001cfa0942",
-        "name": "Соус Spicy-X",
-        "type": "sauce",
-        "proteins": 30,
-        "fat": 20,
-        "carbohydrates": 40,
-        "calories": 30,
-        "price": 90,
-        "image": "https://code.s3.yandex.net/react/code/sauce-02.png",
-        "image_mobile": "https://code.s3.yandex.net/react/code/sauce-02-mobile.png",
-        "image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png",
-        "__v": 0
-    };
-
-    const ingredient2 = {
-        "_id": "643d69a5c3f7b9001cfa0941",
-        "name": "Биокотлета из марсианской Магнолии",
-        "type": "main",
-        "proteins": 420,
-        "fat": 142,
-        "carbohydrates": 242,
-        "calories": 4242,
-        "price": 424,
-        "image": "https://code.s3.yandex.net/react/code/meat-01.png",
-        "image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
-        "image_large": "https://code.s3.yandex.net/react/code/meat-01-large.png",
-        "__v": 0
-    };
+    const bun = data.find(item => item.type === Category.BUN);
+    const ingredient1 = data.find(item => item.type === Category.SAUCE);
+    const ingredient2 = data.find(item => item.type === Category.MAIN);
 
     describe('Добавление ингредиентов', () => {
         it('добавление булки', () => {
@@ -67,8 +26,8 @@ describe('constructor reducer', () => {
                     ingredient: bun
                 })
             ).toEqual({
-                bun,
-                notBun: []
+                ...initialState,                
+                bun
             });
         });
 
@@ -79,7 +38,7 @@ describe('constructor reducer', () => {
                     ingredient: ingredient1
                 })
             ).toEqual({
-                bun: null,
+                ...initialState,
                 notBun: [ingredient1]
             });
         });
@@ -88,14 +47,14 @@ describe('constructor reducer', () => {
     it('удаление ингредиента', () => {
         expect(
             constructorReducer({
-                bun: bun,
+                bun,
                 notBun: [ingredient1, ingredient2]
             }, {
                 type: REMOVE_INGREDIENT,
                 ingredient: ingredient1
             })
         ).toEqual({
-            bun: bun,
+            bun,
             notBun: [ingredient2]
         });
     });     
@@ -103,7 +62,7 @@ describe('constructor reducer', () => {
     it('перемещение ингредиентов', () => {
         expect(
             constructorReducer({
-                bun: bun,
+                bun,
                 notBun: [ingredient1, ingredient2]
             }, {
                 type: SORT_INGREDIENTS,
@@ -111,7 +70,7 @@ describe('constructor reducer', () => {
                 hoverIndex: 1
             })
         ).toEqual({
-            bun: bun,
+            bun,
             notBun: [ingredient2, ingredient1]
         });
     });
@@ -119,14 +78,11 @@ describe('constructor reducer', () => {
     it('удаление всех ингредиентов', () => {
         expect(
             constructorReducer({
-                bun: bun,
+                bun,
                 notBun: [ingredient1, ingredient2]
             }, {
                 type: CLEAR_INGREDIENTS
             })
-        ).toEqual({
-            bun: null,
-            notBun: []
-        });
+        ).toEqual(initialState);
     });
 }); 

@@ -5,21 +5,18 @@ import {
     GET_INGREDIENTS_FAILED
 } from '../actions/ingredients';
 import ingredients from '../../../cypress/fixtures/burger-constructor/ingredients.json';
+import { initialState } from './ingredients';
 
 describe('ingredients reducer', () => {
     it('инициализация', () => {
-        expect(ingredientsReducer(undefined, {})).toEqual({
-            ingredients: null,
-            request: false,
-            failed: false
-        });
+        expect(ingredientsReducer(undefined, {})).toEqual(initialState);
     });
 
     it('выполнение запроса', () => {
         expect(ingredientsReducer(undefined, {
             type: GET_INGREDIENTS_REQUEST
         })).toEqual({
-            ingredients: null,
+            ...initialState,
             request: true,
             failed: false,
         });
@@ -30,7 +27,7 @@ describe('ingredients reducer', () => {
             type: GET_INGREDIENTS_SUCCESS,
             ingredients: ingredients.data
         })).toEqual({
-            failed: false,
+            ...initialState,
             ingredients: ingredients.data,
             request: false
         });
@@ -40,7 +37,7 @@ describe('ingredients reducer', () => {
         expect(ingredientsReducer(undefined, {
             type: GET_INGREDIENTS_FAILED
         })).toEqual({
-            ingredients: null,
+            ...initialState,
             failed: true,
             request: false
         });

@@ -5,23 +5,21 @@ import {
     FORGOT_PASSWORD_REQUEST,
     FORGOT_PASSWORD_SUCCESS
 } from "../actions/forgot-password";
+import { initialState } from "./forgot-password";
 
 describe('forgot password reducer', () => { 
     it('инициализация', () => { 
-        expect(forgotPasswordReducer(undefined, {})).toEqual({
-            request: false,
-            success: false,
-            failed: false
-        });
+        expect(forgotPasswordReducer(undefined, {})).toEqual(initialState);
     });
 
     it('выполнение запроса', () => { 
         expect(forgotPasswordReducer(undefined, {
             type: FORGOT_PASSWORD_REQUEST
         })).toEqual({
+            ...initialState,
             request: true,
             success: false,
-            failed: false,
+            failed: false
         });
     });
 
@@ -29,9 +27,9 @@ describe('forgot password reducer', () => {
         expect(forgotPasswordReducer(undefined, {
             type: FORGOT_PASSWORD_SUCCESS
         })).toEqual({
-            failed: false,
-            request: false,
-            success: true
+            ...initialState,
+            success: true,
+            request: false
         });
     });
 
@@ -39,7 +37,7 @@ describe('forgot password reducer', () => {
         expect(forgotPasswordReducer(undefined, {
             type: FORGOT_PASSWORD_FAILED
         })).toEqual({
-            success: false,
+            ...initialState,
             failed: true,
             request: false
         });
@@ -48,11 +46,7 @@ describe('forgot password reducer', () => {
     it('выход со страницы', () => {
         expect(forgotPasswordReducer(undefined, {
             type: FORGOT_PASSWORD_CLOSE
-        })).toEqual({
-            success: false,
-            failed: false,
-            request: false
-        });
+        })).toEqual(initialState);
     });
 
     
